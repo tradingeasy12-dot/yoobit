@@ -3,11 +3,11 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>YOOBIT - Mining Dashboard</title>
+<title>YOOBIT - Home</title>
 <!-- Link to Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<!-- Link to external stylesheet if needed, otherwise using inline tailwind -->
+<!-- Link to external stylesheet -->
 <link href="./styles.css" rel="stylesheet"/>
 <!-- Telegram WebApp SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -209,11 +209,11 @@
 <!-- Action Buttons -->
 <div class="grid grid-cols-2 gap-4 mb-8">
 <a class="flex items-center justify-center bg-primary-container text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/10 active:scale-95 transition-transform" href="./invest.html">
-                Deposit
-            </a>
+            Deposit
+        </a>
 <a class="flex items-center justify-center bg-surface-container-highest border border-outline-variant text-on-surface py-4 rounded-xl font-bold text-lg active:scale-95 transition-transform" href="./history.html">
-                Withdraw
-            </a>
+            Withdraw
+        </a>
 </div>
 <!-- Status Cards -->
 <div class="grid grid-cols-2 gap-4 mb-10">
@@ -252,29 +252,31 @@
 </a>
 </nav>
 <script>
-        /**
-         * Admin Check Logic for Telegram Mini App
-         */
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const webapp = window.Telegram.WebApp;
-                webapp.ready();
-                
-                // Get user info safely
-                const user = webapp.initDataUnsafe ? webapp.initDataUnsafe.user : null;
-                const adminNav = document.getElementById('admin-nav');
-                
-                if (user && user.username === 'cryptolife15') {
+    /**
+     * Admin Check Logic for Telegram Mini App
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.Telegram && window.Telegram.WebApp) {
+            const webapp = window.Telegram.WebApp;
+            webapp.ready();
+            
+            // Get user info safely
+            const user = webapp.initDataUnsafe ? webapp.initDataUnsafe.user : null;
+            const adminNav = document.getElementById('admin-nav');
+            
+            if (user && user.username === 'cryptolife15') {
+                if (adminNav) {
                     adminNav.classList.remove('hidden');
                     adminNav.style.display = 'flex';
-                } else {
-                    // Double check with just the element if it exists but script failed before
-                    if (adminNav) {
-                        adminNav.classList.add('hidden');
-                        adminNav.style.display = 'none';
-                    }
+                }
+            } else {
+                // Hide if not admin
+                if (adminNav) {
+                    adminNav.classList.add('hidden');
+                    adminNav.style.display = 'none';
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
 </body></html>
