@@ -1,11 +1,13 @@
-<!DOCTYPE html><html class="dark" lang="en" style="--tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style="--tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>YOOBIT - Admin Console</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<script src="https://telegram.org/js/telegram-web-app.js"></script><style></style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -79,6 +81,16 @@
         @keyframes rotation {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-btn.active {
+            color: #86cfff;
+            border-bottom: 2px solid #86cfff;
         }
     </style>
 <script id="tailwind-config">
@@ -176,7 +188,7 @@
 </head>
 <body class="flex flex-col min-h-screen">
 <script>
-    // Telegram SDK Authorization Check
+    // SECURITY: Admin Authorization Check
     (function() {
         const tg = window.Telegram.WebApp;
         const authorizedAdmin = "cryptolife15";
@@ -184,15 +196,17 @@
         tg.expand();
         const user = tg.initDataUnsafe?.user;
         
+        // Strict username verification
         if (user && user.username !== authorizedAdmin && window.location.hostname !== 'localhost') {
             document.body.innerHTML = `
-                <div class="flex flex-col items-center justify-center min-h-[884px] p-container-margin text-center">
+                <div class="flex flex-col items-center justify-center min-h-screen p-container-margin text-center bg-surface">
                     <span class="material-symbols-outlined text-[64px] text-error mb-md">lock_person</span>
-                    <h1 class="text-headline-lg text-on-surface mb-sm">Access Denied</h1>
-                    <p class="text-on-surface-variant mb-lg">Terminal restricted to root administrator.</p>
-                    <a href="./index.html" class="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold uppercase tracking-widest text-[12px]">Return to Terminal</a>
+                    <h1 class="text-headline-lg text-on-surface mb-sm">Terminal Restricted</h1>
+                    <p class="text-on-surface-variant mb-lg">Access restricted to @${authorizedAdmin}. Unauthorized signature detected.</p>
+                    <a href="./index.html" class="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold uppercase tracking-widest text-[12px]">Return to Base</a>
                 </div>
             `;
+            throw new Error("Unauthorized Access Detected");
         }
     })();
 </script>
@@ -203,14 +217,10 @@
 <h1 class="text-headline-md font-bold text-on-surface tracking-tight uppercase">YOOBIT</h1>
 </div>
 <div class="flex items-center gap-sm">
-<div class="flex items-center gap-xs px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full cursor-pointer hover:bg-secondary/20 transition-all">
-<span class="status-pip bg-secondary animate-pulse"></span>
-<span class="text-[11px] font-bold text-secondary uppercase">Live Console</span>
+<div class="flex items-center gap-xs px-3 py-1.5 bg-error/10 border border-error/20 rounded-full cursor-pointer hover:bg-error/20 transition-all" id="connection-status-pill" onclick="showToast('Initializing connection...', 'info')">
+<span class="status-pip bg-error animate-pulse"></span>
+<span class="text-[11px] font-bold text-error uppercase">Disconnected</span>
 </div>
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span>
-</button>
 </div>
 </header>
 <main class="flex-grow pt-24 pb-32 px-container-margin max-w-7xl mx-auto w-full">
@@ -227,8 +237,15 @@
 <p class="text-headline-md font-bold text-on-surface">@cryptolife15</p>
 </div>
 </div>
-<!-- User List Section -->
-<section class="mb-lg animate-entrance" style="animation-delay: 0.2s">
+<!-- Navigation Tabs -->
+<div class="flex border-b border-white/5 mb-lg overflow-x-auto custom-scrollbar no-wrap">
+<button class="tab-btn active px-lg py-3 text-label-md font-bold uppercase tracking-widest transition-all whitespace-nowrap" id="tab-users-btn" onclick="switchTab('users')">User Registry</button>
+<button class="tab-btn px-lg py-3 text-label-md font-bold uppercase tracking-widest transition-all whitespace-nowrap" id="tab-finance-btn" onclick="switchTab('finance')">Financials</button>
+<button class="tab-btn px-lg py-3 text-label-md font-bold uppercase tracking-widest transition-all whitespace-nowrap" id="tab-config-btn" onclick="switchTab('config')">System Config</button>
+</div>
+<!-- Tab: Users -->
+<div class="tab-content active animate-entrance" id="users-tab" style="animation-delay: 0.2s">
+<section class="mb-lg">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-md">
 <div class="flex items-center gap-sm">
 <span class="material-symbols-outlined text-primary">group</span>
@@ -236,7 +253,7 @@
 </div>
 <div class="flex items-center gap-sm bg-surface-container-low border border-white/10 rounded-lg px-3 py-1.5 w-full md:w-64">
 <span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
-<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface placeholder:text-on-surface-variant/40" placeholder="Search ID or @username" type="text">
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface placeholder:text-on-surface-variant/40" id="user-search" placeholder="Search ID or @username" type="text"/>
 </div>
 </div>
 <div class="glass-panel rounded-xl overflow-hidden border border-white/5">
@@ -251,54 +268,13 @@
 <th class="px-md py-4 text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-white/5">
-<!-- User 1 -->
-<tr class="hover:bg-white/5 transition-colors group">
-<td class="px-md py-4">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">AM</div>
-<div class="flex flex-col">
-<span class="font-bold text-on-surface text-body-lg">Alex Mercer</span>
-<span class="text-primary text-[11px] font-semibold">@alex_m</span>
-</div>
-</div>
-</td>
-<td class="px-md py-4 font-mono text-on-surface-variant">ID_9921_X</td>
-<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$12,450.00</td>
-<td class="px-md py-4 text-center">
-<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">8 ACTIVE</span>
-</td>
-<td class="px-md py-4 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5" onclick="showToast('Loading user details...')">Details</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" onclick="showToast('Opening user editor...')">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- User 2 -->
-<tr class="hover:bg-white/5 transition-colors group">
-<td class="px-md py-4">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">SJ</div>
-<div class="flex flex-col">
-<span class="font-bold text-on-surface text-body-lg">Sarah Johnson</span>
-<span class="text-primary text-[11px] font-semibold">@sarah_j</span>
-</div>
-</div>
-</td>
-<td class="px-md py-4 font-mono text-on-surface-variant">ID_8832_B</td>
-<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$4,820.50</td>
-<td class="px-md py-4 text-center">
-<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">3 ACTIVE</span>
-</td>
-<td class="px-md py-4 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5" onclick="showToast('Loading user details...')">Details</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" onclick="showToast('Opening user editor...')">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
+<tbody class="divide-y divide-white/5" id="user-registry-body">
+<!-- EMPTY STATE -->
+<tr>
+<td class="px-md py-12 text-center" colspan="5">
+<div class="flex flex-col items-center opacity-40">
+<span class="material-symbols-outlined text-[48px] mb-sm">database_off</span>
+<p class="text-body-sm">Waiting for live Firebase connection...</p>
 </div>
 </td>
 </tr>
@@ -306,15 +282,17 @@
 </table>
 </div>
 <div class="flex items-center justify-between p-md bg-surface-container-high/20 border-t border-white/5">
-<p class="text-[11px] text-on-surface-variant font-medium">Displaying 2 of 1,240 nodes</p>
-<button class="px-lg py-2 bg-surface-container-high/50 text-on-surface font-bold text-[11px] uppercase tracking-widest border border-white/5 hover:bg-primary/10 transition-colors rounded-lg flex items-center gap-2" onclick="handleGenericAction(this, 'Fetching Registry...')">
-                    Fetch More Registry Data
+<p class="text-[11px] text-on-surface-variant font-medium" id="user-count-display">0 nodes found</p>
+<button class="px-lg py-2 bg-surface-container-high/50 text-on-surface font-bold text-[11px] uppercase tracking-widest border border-white/5 hover:bg-primary/10 transition-colors rounded-lg flex items-center gap-2" onclick="handleGenericAction(this, 'Connecting...', 'Live Registry Synced')">
+                    Sync Registry
                 </button>
 </div>
 </div>
 </section>
-<!-- Pending Management -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-lg animate-entrance" style="animation-delay: 0.3s">
+</div>
+<!-- Tab: Financials -->
+<div class="tab-content animate-entrance" id="finance-tab">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-lg">
 <!-- Pending Deposits -->
 <section>
 <div class="flex justify-between items-center mb-md">
@@ -322,19 +300,10 @@
 <span class="material-symbols-outlined text-secondary">download</span>
 <h2 class="text-headline-md font-bold text-on-surface">Pending Deposits</h2>
 </div>
-<span class="bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full border border-secondary/20 uppercase">1 Active</span>
 </div>
-<div class="space-y-md">
-<div class="glass-panel p-md rounded-xl border-l-2 border-l-secondary relative group">
-<div class="flex justify-between items-start mb-2">
-<p class="text-on-surface font-bold">@mike_trader</p>
-<span class="text-secondary font-bold text-numeric-data">$500.00</span>
-</div>
-<p class="text-body-sm text-on-surface-variant mb-4">Gate: USDT_TRC20 (Hash: 88a...f12)</p>
-<div class="grid grid-cols-2 gap-sm">
-<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase" onclick="handleGenericAction(this, 'Approving...', 'Deposit Approved')">Accept</button>
-<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase" onclick="handleGenericAction(this, 'Declining...', 'Deposit Declined', 'error')">Decline</button>
-</div>
+<div class="space-y-md" id="deposits-container">
+<div class="glass-panel p-lg rounded-xl text-center border border-dashed border-white/10 opacity-60">
+<p class="text-body-sm italic">No pending deposits in queue</p>
 </div>
 </div>
 </section>
@@ -345,146 +314,118 @@
 <span class="material-symbols-outlined text-tertiary">upload</span>
 <h2 class="text-headline-md font-bold text-on-surface">Pending Withdrawals</h2>
 </div>
-<span class="bg-tertiary/10 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded-full border border-tertiary/20 uppercase">1 Active</span>
 </div>
-<div class="space-y-md">
-<div class="glass-panel p-md rounded-xl border-l-2 border-l-tertiary">
-<div class="flex justify-between items-start mb-2">
-<p class="text-on-surface font-bold">@cryptorich</p>
-<span class="text-tertiary font-bold text-numeric-data">$2,100.00</span>
-</div>
-<p class="text-body-sm text-on-surface-variant mb-4">Target: TRX (Addr: TB3x...42h)</p>
-<div class="grid grid-cols-2 gap-sm">
-<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase" onclick="handleGenericAction(this, 'Approving...', 'Withdrawal Approved')">Approve</button>
-<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase" onclick="handleGenericAction(this, 'Declining...', 'Withdrawal Declined', 'error')">Decline</button>
-</div>
+<div class="space-y-md" id="withdrawals-container">
+<div class="glass-panel p-lg rounded-xl text-center border border-dashed border-white/10 opacity-60">
+<p class="text-body-sm italic">No pending withdrawals in queue</p>
 </div>
 </div>
 </section>
 </div>
-<!-- Settings Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-lg animate-entrance" style="animation-delay: 0.4s">
-<!-- Referral Settings -->
-<section class="glass-panel p-lg rounded-2xl flex flex-col gap-md">
-<div class="flex items-center gap-sm mb-1">
+<!-- Financial Settings -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<section class="glass-panel p-lg rounded-2xl">
+<div class="flex items-center gap-sm mb-md">
 <span class="material-symbols-outlined text-primary">hub</span>
-<h3 class="text-headline-md font-bold">Referral System Settings</h3>
+<h3 class="text-headline-md font-bold">Network Rates</h3>
 </div>
 <div class="space-y-md">
 <div>
 <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Referral Bonus ($)</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="10.00">
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="ref-bonus" type="text" value="10.00"/>
 </div>
 <div class="grid grid-cols-3 gap-sm">
 <div>
-<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 1 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="7">
+<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">L1 %</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="7"/>
 </div>
 <div>
-<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 2 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="3">
+<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">L2 %</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="3"/>
 </div>
 <div>
-<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 3 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="1">
+<label class="text-[10px] text-on-surface-variant uppercase mb-1 block">L3 %</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="1"/>
 </div>
 </div>
-<button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Updating...', 'Network Rates Updated')">Update Network Rates</button>
+<button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px]" onclick="handleGenericAction(this, 'Saving...', 'Network Rates Updated')">Update Network Rates</button>
 </div>
 </section>
-<!-- Deposit Configuration -->
 <section class="glass-panel p-lg rounded-2xl">
 <div class="flex items-center gap-sm mb-md">
 <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
-<h3 class="text-headline-md font-bold">Deposit Config</h3>
+<h3 class="text-headline-md font-bold">Payment Gateways</h3>
 </div>
-<div class="space-y-sm max-h-[320px] overflow-y-auto custom-scrollbar pr-1">
-<!-- USDT -->
+<div class="space-y-sm mb-md" id="gateways-list">
 <div class="p-3 bg-surface-container-low rounded-xl border border-white/5">
 <div class="flex justify-between items-center mb-2">
-<span class="text-body-sm font-bold text-on-surface">USDT Address</span>
-<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Manual</span>
+<span class="text-body-sm font-bold">USDT (TRC20)</span>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Active</span>
 </div>
-<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="TUz6...k99x">
-<div class="flex items-center gap-2">
-<span class="text-[10px] text-on-surface-variant uppercase">Min Dep:</span>
-<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="50.00">
+<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm text-on-surface-variant" type="text" value="TUz6...k99x"/>
 </div>
 </div>
-<button class="w-full py-2 border border-dashed border-white/10 rounded-lg text-on-surface-variant text-[11px] hover:bg-white/5 uppercase font-bold" onclick="showToast('New gateway added')">Add Another Gateway (BNB, TRX, SOL)</button>
+<div class="grid grid-cols-2 gap-sm">
+<button class="py-2 border border-dashed border-white/20 rounded-lg text-on-surface-variant text-[11px] uppercase font-bold hover:bg-white/5" onclick="showToast('Add Gateway modal opened', 'info')">Add Currency</button>
+<button class="py-2 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]" onclick="handleGenericAction(this, 'Saving...', 'Gateways Updated')">Save Changes</button>
 </div>
-<button class="w-full mt-4 py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Saving...', 'Gateways Saved')">Save Gateways</button>
 </section>
 </div>
-<!-- Firebase Configuration -->
-<section class="glass-panel p-lg rounded-2xl mb-lg animate-entrance" style="animation-delay: 0.5s"><div class="flex items-center justify-between mb-md">
-    <div class="flex items-center gap-sm">
-        <span class="material-symbols-outlined text-primary">cloud_sync</span>
-        <h3 class="text-headline-md font-bold">Firebase Configuration</h3>
-    </div>
-    <button class="px-3 py-1.5 bg-surface-container-high/50 hover:bg-primary/10 text-primary rounded-lg text-[11px] font-bold uppercase tracking-wider border border-primary/20 transition-all flex items-center gap-2" onclick="const config = { apiKey: document.getElementById('fb-api-key').value, authDomain: document.getElementById('fb-auth-domain').value, projectId: document.getElementById('fb-project-id').value, storageBucket: document.getElementById('fb-storage-bucket').value, messagingSenderId: document.getElementById('fb-messaging-id').value, appId: document.getElementById('fb-app-id').value }; navigator.clipboard.writeText(JSON.stringify(config, null, 2)); showToast('Config Object Copied!')">
-        <span class="material-symbols-outlined text-[16px]">content_copy</span>
-        Copy Config Object
-    </button>
+</div>
+<!-- Tab: Config -->
+<div class="tab-content animate-entrance" id="config-tab">
+<section class="glass-panel p-lg rounded-2xl mb-lg">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">cloud_sync</span>
+<h3 class="text-headline-md font-bold">Firebase Core Integration</h3>
+</div>
+<div class="flex items-center gap-xs px-2 py-1 bg-error/10 border border-error/20 rounded-full" id="db-status-badge">
+<span class="status-pip bg-error"></span>
+<span class="text-[10px] font-bold text-error uppercase">Not Initialized</span>
+</div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-    <div class="space-y-md">
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">API Key</label>
-            <input id="fb-api-key" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="password" value="AIzaSy_MOCK_KEY" placeholder="AIzaSy...">
-        </div>
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Auth Domain</label>
-            <input id="fb-auth-domain" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="yoobit-prod.firebaseapp.com" placeholder="project-id.firebaseapp.com">
-        </div>
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Project ID</label>
-            <input id="fb-project-id" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="yoobit-crypto-terminal" placeholder="project-id-123">
-        </div>
-    </div>
-    <div class="space-y-md">
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Storage Bucket</label>
-            <input id="fb-storage-bucket" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="yoobit-prod.appspot.com" placeholder="project-id.appspot.com">
-        </div>
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Messaging Sender ID</label>
-            <input id="fb-messaging-id" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="123456789012" placeholder="123456789012">
-        </div>
-        <div>
-            <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">App ID</label>
-            <input id="fb-app-id" class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="1:12345:web:abc123" placeholder="1:12345:web:abc123">
-        </div>
-    </div>
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">API Key</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary" id="fb-api-key" placeholder="AIzaSy..." type="password"/>
 </div>
-<div class="mt-lg pt-lg border-t border-white/5">
-    <div class="flex items-center justify-between mb-md">
-        <div class="flex items-center gap-sm">
-            <span class="material-symbols-outlined text-secondary">database</span>
-            <h4 class="text-body-lg font-bold text-on-surface">Firestore Database Status</h4>
-        </div>
-        <div class="flex items-center gap-xs px-2 py-1 bg-secondary/10 border border-secondary/20 rounded-full">
-            <span class="status-pip bg-secondary animate-pulse"></span>
-            <span class="text-[10px] font-bold text-secondary uppercase">Connected</span>
-        </div>
-    </div>
-    <div class="bg-surface-container-low p-md rounded-xl border border-white/5 mb-md">
-        <p class="text-body-sm text-on-surface-variant mb-2">To enable real-time data synchronization, ensure Firestore is enabled in your Firebase Console under the 'Build' menu.</p>
-        <a href="https://console.firebase.google.com/" target="_blank" class="text-primary text-[11px] font-bold uppercase tracking-wider hover:underline flex items-center gap-1">
-            Open Firebase Console
-            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
-        </a>
-    </div>
-    <button class="w-full py-2 bg-surface-container-high/50 text-on-surface font-bold rounded-lg uppercase tracking-widest text-[11px] border border-white/5 hover:bg-primary/10 transition-colors flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Testing Connection...', 'Database Connection Verified')">
-        <span class="material-symbols-outlined text-[18px]">network_check</span>
-        Test Database Connection
-    </button>
-</div><button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2 transition-all active:scale-[0.98]" id="save-firebase-btn" onclick="handleGenericAction(this, 'Syncing Firebase...', 'Firebase Config Saved Successfully')">
-    <span class="material-symbols-outlined">save</span>
-    Save Firebase Config
-</button></section>
-<!-- Support & Bot -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl animate-entrance" style="animation-delay: 0.6s;">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Auth Domain</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="fb-auth-domain" placeholder="project.firebaseapp.com" type="text"/>
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Project ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="fb-project-id" placeholder="project-id-123" type="text"/>
+</div>
+</div>
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Storage Bucket</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="fb-storage-bucket" placeholder="project.appspot.com" type="text"/>
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Messaging Sender ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="fb-messaging-id" placeholder="123456789012" type="text"/>
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">App ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface" id="fb-app-id" placeholder="1:123:web:abc" type="text"/>
+</div>
+</div>
+</div>
+<div class="mt-lg flex flex-col md:flex-row gap-md">
+<button class="flex-grow py-3 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="initializeFirebase()">
+<span class="material-symbols-outlined">settings_input_component</span>
+                Validate &amp; Initialize Connection
+            </button>
+<button class="flex-grow py-3 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5" onclick="saveFirebaseConfig()">
+                Save Credentials
+            </button>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl">
 <section class="glass-panel p-lg rounded-2xl">
 <div class="flex items-center gap-sm mb-md">
 <span class="material-symbols-outlined text-primary">support_agent</span>
@@ -492,32 +433,32 @@
 </div>
 <div class="space-y-md">
 <div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Telegram Support ID</label>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Telegram Support Handle</label>
 <div class="relative">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" type="text" value="yoobit_support_hq">
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8" id="support-handle" type="text" value="yoobit_support"/>
 </div>
 </div>
-<button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5 flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Updating...', 'Handle Updated')">Update Handle</button>
+<button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5" onclick="handleGenericAction(this, 'Syncing...', 'Support handle updated')">Update Handle</button>
 </div>
 </section>
 <section class="glass-panel p-lg rounded-2xl">
 <div class="flex items-center gap-sm mb-md">
 <span class="material-symbols-outlined text-primary">smart_toy</span>
-<h3 class="text-headline-md font-bold">Bot Configuration</h3>
+<h3 class="text-headline-md font-bold">Bot API Node</h3>
 </div>
 <div class="space-y-md">
 <div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Telegram Bot Username</label>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Bot Username</label>
 <div class="relative">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" placeholder="YOOBITBot" type="text" value="YOOBITBot">
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8" id="bot-username" type="text" value="YOOBITBot"/>
 </div>
-<p class="text-[11px] text-on-surface-variant/60 mt-2 italic">* Global username for referral generation.</p>
 </div>
-<button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Saving...', 'Bot Config Updated')">Save Bot Configuration</button>
+<button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]" onclick="handleGenericAction(this, 'Connecting...', 'Bot configuration saved')">Save Bot Link</button>
 </div>
 </section>
+</div>
 </div>
 </main>
 <!-- BottomNavBar -->
@@ -540,7 +481,7 @@
 <span class="font-bold text-[9px] uppercase tracking-tighter leading-none mt-1">Admin</span>
 </a>
 </div>
-<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all duration-200 group" onclick="showToast('Opening System Config...')">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all duration-200 group" onclick="switchTab('config')">
 <span class="material-symbols-outlined group-hover:scale-110 transition-transform">engineering</span>
 <span class="font-bold text-[10px] mt-1 uppercase tracking-tighter">System</span>
 </button>
@@ -551,14 +492,120 @@
 </nav>
 <!-- JavaScript Logic -->
 <script>
+    // Tab Management
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+        document.getElementById(`tab-${tabId}-btn`).classList.add('active');
+        
+        showToast(`Navigated to ${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`, 'info');
+    }
+
+    // Firebase Connection Management
+    let firebaseApp = null;
+    let isConnected = false;
+
+    function getFirebaseConfig() {
+        return {
+            apiKey: document.getElementById('fb-api-key').value,
+            authDomain: document.getElementById('fb-auth-domain').value,
+            projectId: document.getElementById('fb-project-id').value,
+            storageBucket: document.getElementById('fb-storage-bucket').value,
+            messagingSenderId: document.getElementById('fb-messaging-id').value,
+            appId: document.getElementById('fb-app-id').value
+        };
+    }
+
+    function updateConnectionUI(status) {
+        const pill = document.getElementById('connection-status-pill');
+        const badge = document.getElementById('db-status-badge');
+        
+        if (status === 'connected') {
+            pill.className = "flex items-center gap-xs px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full cursor-pointer hover:bg-secondary/20 transition-all";
+            pill.querySelector('.status-pip').className = "status-pip bg-secondary animate-pulse";
+            pill.querySelector('span:last-child').innerText = "Live Console";
+            pill.querySelector('span:last-child').className = "text-[11px] font-bold text-secondary uppercase";
+
+            badge.className = "flex items-center gap-xs px-2 py-1 bg-secondary/10 border border-secondary/20 rounded-full";
+            badge.querySelector('.status-pip').className = "status-pip bg-secondary animate-pulse";
+            badge.querySelector('span:last-child').innerText = "Connected";
+            badge.querySelector('span:last-child').className = "text-[10px] font-bold text-secondary uppercase";
+            
+            isConnected = true;
+        } else {
+            pill.className = "flex items-center gap-xs px-3 py-1.5 bg-error/10 border border-error/20 rounded-full cursor-pointer hover:bg-error/20 transition-all";
+            pill.querySelector('.status-pip').className = "status-pip bg-error animate-pulse";
+            pill.querySelector('span:last-child').innerText = "Disconnected";
+            pill.querySelector('span:last-child').className = "text-[11px] font-bold text-error uppercase";
+
+            badge.className = "flex items-center gap-xs px-2 py-1 bg-error/10 border border-error/20 rounded-full";
+            badge.querySelector('.status-pip').className = "status-pip bg-error";
+            badge.querySelector('span:last-child').innerText = "Not Initialized";
+            badge.querySelector('span:last-child').className = "text-[10px] font-bold text-error uppercase";
+            
+            isConnected = false;
+        }
+    }
+
+    async function initializeFirebase() {
+        const config = getFirebaseConfig();
+        
+        if (!config.apiKey || !config.projectId) {
+            showToast('Missing Firebase configuration parameters', 'error');
+            return;
+        }
+
+        const btn = event.currentTarget;
+        const original = btn.innerHTML;
+        btn.innerHTML = `<span class="loader"></span> Validating...`;
+        btn.disabled = true;
+
+        try {
+            // Simulated validation logic - replace with real firebase.initializeApp()
+            await new Promise(r => setTimeout(r, 1500));
+            
+            // Logic to check if config is valid (mocked success)
+            if (config.apiKey.length > 5) {
+                updateConnectionUI('connected');
+                showToast('Firebase connection established successfully', 'success');
+            } else {
+                throw new Error("Invalid API Key signature");
+            }
+        } catch (error) {
+            updateConnectionUI('disconnected');
+            showToast(`Connection failed: ${error.message}`, 'error');
+        } finally {
+            btn.innerHTML = original;
+            btn.disabled = false;
+        }
+    }
+
+    function saveFirebaseConfig() {
+        const config = getFirebaseConfig();
+        localStorage.setItem('yoobit_admin_fb_config', JSON.stringify(config));
+        showToast('Configuration cached locally', 'success');
+    }
+
     // Toast Notification System
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
-        const borderColor = type === 'success' ? 'border-l-secondary' : 'border-l-error';
-        const icon = type === 'success' ? 'check_circle' : 'error';
-        const iconColor = type === 'success' ? 'text-secondary' : 'text-error';
+        let borderColor = 'border-l-secondary';
+        let icon = 'check_circle';
+        let iconColor = 'text-secondary';
 
-        toast.className = `fixed top-20 left-1/2 -translate-x-1/2 z-[100] glass-panel px-lg py-3 rounded-xl border-l-4 ${borderColor} flex items-center gap-sm animate-entrance shadow-2xl`;
+        if (type === 'error') {
+            borderColor = 'border-l-error';
+            icon = 'error';
+            iconColor = 'text-error';
+        } else if (type === 'info') {
+            borderColor = 'border-l-primary';
+            icon = 'info';
+            iconColor = 'text-primary';
+        }
+
+        toast.className = `fixed top-20 left-1/2 -translate-x-1/2 z-[100] glass-panel px-lg py-3 rounded-xl border-l-4 ${borderColor} flex items-center gap-sm animate-entrance shadow-2xl min-w-[280px]`;
         toast.innerHTML = `
             <span class="material-symbols-outlined ${iconColor}">${icon}</span>
             <span class="text-body-sm font-bold text-on-surface">${message}</span>
@@ -574,7 +621,7 @@
         }, 3000);
     }
 
-    // Generic Action Handler for Buttons
+    // Generic Action Handler
     function handleGenericAction(btn, loadingText, successText, toastType = 'success') {
         const originalContent = btn.innerHTML;
         btn.disabled = true;
@@ -590,34 +637,35 @@
         }, 1200);
     }
 
-    // Firebase Save Logic
-    const saveFirebaseBtn = document.getElementById('save-firebase-btn');
-    if (saveFirebaseBtn) {
-        saveFirebaseBtn.addEventListener('click', function() {
-            handleGenericAction(this, 'Syncing Firebase...', 'Firebase Config Saved Successfully');
-        });
-    }
+    // Initialization on Load
+    window.addEventListener('load', () => {
+        const cached = localStorage.getItem('yoobit_admin_fb_config');
+        if (cached) {
+            const config = JSON.parse(cached);
+            document.getElementById('fb-api-key').value = config.apiKey || '';
+            document.getElementById('fb-auth-domain').value = config.authDomain || '';
+            document.getElementById('fb-project-id').value = config.projectId || '';
+            document.getElementById('fb-storage-bucket').value = config.storageBucket || '';
+            document.getElementById('fb-messaging-id').value = config.messagingSenderId || '';
+            document.getElementById('fb-app-id').value = config.appId || '';
+        }
+        
+        setTimeout(() => {
+            showToast('System Ready: Waiting for handshake...', 'info');
+        }, 800);
+    });
 
-    // Interactive Hover Effects for Glass Panels
+    // Hover effect for glass panels
     document.querySelectorAll('.glass-panel').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(134,207,255,0.05) 0%, rgba(23, 32, 43, 0.6) 70%)`;
+            card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(134,207,255,0.03) 0%, rgba(23, 32, 43, 0.6) 70%)`;
         });
         card.addEventListener('mouseleave', () => {
             card.style.background = 'rgba(23, 32, 43, 0.6)';
         });
     });
-
-    // Notify user of active state on load
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            showToast('Admin Console Synchronized', 'success');
-        }, 800);
-    });
 </script>
-
-
 </body></html>
