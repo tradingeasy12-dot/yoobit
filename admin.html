@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!DOCTYPE html><html class="dark" lang="en" style="--tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>YOOBIT - Admin Console</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script><style></style>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -179,7 +177,7 @@
         // Note: In production, this should be verified server-side using initData hash
         if (user && user.username !== authorizedAdmin && window.location.hostname !== 'localhost') {
             document.body.innerHTML = `
-                <div class="flex flex-col items-center justify-center min-h-screen p-container-margin text-center">
+                <div class="flex flex-col items-center justify-center min-h-[884px] p-container-margin text-center" data-stitch-vh="min-h-[884px]===min-h-screen">
                     <span class="material-symbols-outlined text-[64px] text-error mb-md">lock_person</span>
                     <h1 class="text-headline-lg text-on-surface mb-sm">Access Denied</h1>
                     <p class="text-on-surface-variant mb-lg">Terminal restricted to root administrator.</p>
@@ -228,7 +226,7 @@
 </div>
 <div class="flex items-center gap-sm bg-surface-container-low border border-white/10 rounded-lg px-3 py-1.5 w-full md:w-64">
 <span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
-<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface" placeholder="Search ID or @username" type="text"/>
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface" placeholder="Search ID or @username" type="text">
 </div>
 </div>
 <div class="glass-panel rounded-xl overflow-hidden border border-white/5">
@@ -390,20 +388,20 @@
 <div class="space-y-md">
 <div>
 <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Referral Bonus ($)</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="10.00"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="10.00">
 </div>
 <div class="grid grid-cols-3 gap-sm">
 <div>
 <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 1 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="7"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="7">
 </div>
 <div>
 <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 2 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="3"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="3">
 </div>
 <div>
 <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Level 3 %</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="1"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="1">
 </div>
 </div>
 <button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px]">Update Network Rates</button>
@@ -422,10 +420,10 @@
 <span class="text-body-sm font-bold text-on-surface">USDT Address</span>
 <span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Manual</span>
 </div>
-<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="TUz6...k99x"/>
+<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="TUz6...k99x">
 <div class="flex items-center gap-2">
 <span class="text-[10px] text-on-surface-variant uppercase">Min Dep:</span>
-<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="50.00"/>
+<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="50.00">
 </div>
 </div>
 <!-- BTC -->
@@ -434,10 +432,10 @@
 <span class="text-body-sm font-bold text-on-surface">BTC Address</span>
 <span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Manual</span>
 </div>
-<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="bc1q...x88z"/>
+<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="bc1q...x88z">
 <div class="flex items-center gap-2">
 <span class="text-[10px] text-on-surface-variant uppercase">Min Dep:</span>
-<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="0.001"/>
+<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="0.001">
 </div>
 </div>
 <button class="w-full py-2 border border-dashed border-white/10 rounded-lg text-on-surface-variant text-[11px] hover:bg-white/5 uppercase font-bold">Add Another Gateway (BNB, TRX, SOL)</button>
@@ -495,7 +493,7 @@
 <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Telegram Support ID</label>
 <div class="relative">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" type="text" value="yoobit_support_hq"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" type="text" value="yoobit_support_hq">
 </div>
 </div>
 <button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5">Update Handle</button>
@@ -511,12 +509,48 @@
 <label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Telegram Bot Username</label>
 <div class="relative">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" placeholder="YOOBITBot" type="text" value="YOOBITBot"/>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" placeholder="YOOBITBot" type="text" value="YOOBITBot">
 </div>
 <p class="text-[11px] text-on-surface-variant/60 mt-2 italic">* Global username for referral generation.</p>
 </div>
 <button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Bot Configuration</button>
 </div>
+</section><section class="glass-panel p-lg rounded-2xl md:col-span-2">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">cloud_sync</span>
+<h3 class="text-headline-md font-bold">Firebase Configuration</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">API Key</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="password" placeholder="AIzaSy...">
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Auth Domain</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id.firebaseapp.com">
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Project ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id-123">
+</div>
+</div>
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Storage Bucket</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id.appspot.com">
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Messaging Sender ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="1234567890">
+</div>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">App ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="1:12345:web:abc123">
+</div>
+</div>
+</div>
+<button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Firebase Config</button>
 </section>
 <section class="glass-panel p-lg rounded-2xl md:col-span-2">
 <div class="flex justify-between items-center mb-md">
@@ -575,4 +609,6 @@
         });
     });
 </script>
+
+
 </body></html>
