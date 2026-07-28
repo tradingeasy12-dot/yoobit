@@ -66,6 +66,20 @@
             background: rgba(134, 207, 255, 0.2);
             border-radius: 10px;
         }
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid currentColor;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -167,17 +181,12 @@
         const tg = window.Telegram.WebApp;
         const authorizedAdmin = "cryptolife15";
         
-        // Ensure app is expanded
         tg.expand();
-
-        // Check user object from InitData
         const user = tg.initDataUnsafe?.user;
         
-        // Simple redirection if not the authorized admin
-        // Note: In production, this should be verified server-side using initData hash
         if (user && user.username !== authorizedAdmin && window.location.hostname !== 'localhost') {
             document.body.innerHTML = `
-                <div class="flex flex-col items-center justify-center min-h-[884px] p-container-margin text-center" data-stitch-vh="min-h-[884px]===min-h-screen">
+                <div class="flex flex-col items-center justify-center min-h-[884px] p-container-margin text-center">
                     <span class="material-symbols-outlined text-[64px] text-error mb-md">lock_person</span>
                     <h1 class="text-headline-lg text-on-surface mb-sm">Access Denied</h1>
                     <p class="text-on-surface-variant mb-lg">Terminal restricted to root administrator.</p>
@@ -194,12 +203,13 @@
 <h1 class="text-headline-md font-bold text-on-surface tracking-tight uppercase">YOOBIT</h1>
 </div>
 <div class="flex items-center gap-sm">
-<div class="flex items-center gap-xs px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full">
-<span class="status-pip bg-secondary"></span>
+<div class="flex items-center gap-xs px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full cursor-pointer hover:bg-secondary/20 transition-all">
+<span class="status-pip bg-secondary animate-pulse"></span>
 <span class="text-[11px] font-bold text-secondary uppercase">Live Console</span>
 </div>
-<button class="p-2 text-on-surface-variant">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors relative">
 <span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span>
 </button>
 </div>
 </header>
@@ -226,7 +236,7 @@
 </div>
 <div class="flex items-center gap-sm bg-surface-container-low border border-white/10 rounded-lg px-3 py-1.5 w-full md:w-64">
 <span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
-<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface" placeholder="Search ID or @username" type="text">
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface placeholder:text-on-surface-variant/40" placeholder="Search ID or @username" type="text">
 </div>
 </div>
 <div class="glass-panel rounded-xl overflow-hidden border border-white/5">
@@ -260,8 +270,8 @@
 </td>
 <td class="px-md py-4 text-right">
 <div class="flex items-center justify-end gap-2">
-<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5" onclick="showToast('Loading user details...')">Details</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" onclick="showToast('Opening user editor...')">
 <span class="material-symbols-outlined text-[20px]">edit</span>
 </button>
 </div>
@@ -285,33 +295,8 @@
 </td>
 <td class="px-md py-4 text-right">
 <div class="flex items-center justify-end gap-2">
-<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- User 3 (Mock for list scale) -->
-<tr class="hover:bg-white/5 transition-colors group">
-<td class="px-md py-4">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary font-bold">MD</div>
-<div class="flex flex-col">
-<span class="font-bold text-on-surface text-body-lg">Mike Doe</span>
-<span class="text-primary text-[11px] font-semibold">@mike_trader</span>
-</div>
-</div>
-</td>
-<td class="px-md py-4 font-mono text-on-surface-variant">ID_4412_Z</td>
-<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$1,100.25</td>
-<td class="px-md py-4 text-center">
-<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">1 ACTIVE</span>
-</td>
-<td class="px-md py-4 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5" onclick="showToast('Loading user details...')">Details</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" onclick="showToast('Opening user editor...')">
 <span class="material-symbols-outlined text-[20px]">edit</span>
 </button>
 </div>
@@ -321,8 +306,8 @@
 </table>
 </div>
 <div class="flex items-center justify-between p-md bg-surface-container-high/20 border-t border-white/5">
-<p class="text-[11px] text-on-surface-variant font-medium">Displaying 3 of 1,240 nodes</p>
-<button class="px-lg py-2 bg-surface-container-high/50 text-on-surface font-bold text-[11px] uppercase tracking-widest border border-white/5 hover:bg-primary/10 transition-colors rounded-lg">
+<p class="text-[11px] text-on-surface-variant font-medium">Displaying 2 of 1,240 nodes</p>
+<button class="px-lg py-2 bg-surface-container-high/50 text-on-surface font-bold text-[11px] uppercase tracking-widest border border-white/5 hover:bg-primary/10 transition-colors rounded-lg flex items-center gap-2" onclick="handleGenericAction(this, 'Fetching Registry...')">
                     Fetch More Registry Data
                 </button>
 </div>
@@ -337,7 +322,7 @@
 <span class="material-symbols-outlined text-secondary">download</span>
 <h2 class="text-headline-md font-bold text-on-surface">Pending Deposits</h2>
 </div>
-<span class="bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full border border-secondary/20 uppercase">3 Active</span>
+<span class="bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full border border-secondary/20 uppercase">1 Active</span>
 </div>
 <div class="space-y-md">
 <div class="glass-panel p-md rounded-xl border-l-2 border-l-secondary relative group">
@@ -347,8 +332,8 @@
 </div>
 <p class="text-body-sm text-on-surface-variant mb-4">Gate: USDT_TRC20 (Hash: 88a...f12)</p>
 <div class="grid grid-cols-2 gap-sm">
-<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase">Accept</button>
-<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase">Decline</button>
+<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase" onclick="handleGenericAction(this, 'Approving...', 'Deposit Approved')">Accept</button>
+<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase" onclick="handleGenericAction(this, 'Declining...', 'Deposit Declined', 'error')">Decline</button>
 </div>
 </div>
 </div>
@@ -370,8 +355,8 @@
 </div>
 <p class="text-body-sm text-on-surface-variant mb-4">Target: TRX (Addr: TB3x...42h)</p>
 <div class="grid grid-cols-2 gap-sm">
-<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase">Approve</button>
-<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase">Decline</button>
+<button class="py-2 bg-secondary/10 text-secondary rounded-lg font-bold text-[12px] border border-secondary/20 hover:bg-secondary hover:text-on-secondary transition-all uppercase" onclick="handleGenericAction(this, 'Approving...', 'Withdrawal Approved')">Approve</button>
+<button class="py-2 bg-error/10 text-error rounded-lg font-bold text-[12px] border border-error/20 hover:bg-error hover:text-on-error transition-all uppercase" onclick="handleGenericAction(this, 'Declining...', 'Withdrawal Declined', 'error')">Decline</button>
 </div>
 </div>
 </div>
@@ -404,7 +389,7 @@
 <input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface text-center" type="text" value="1">
 </div>
 </div>
-<button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px]">Update Network Rates</button>
+<button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Updating...', 'Network Rates Updated')">Update Network Rates</button>
 </div>
 </section>
 <!-- Deposit Configuration -->
@@ -426,60 +411,66 @@
 <input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="50.00">
 </div>
 </div>
-<!-- BTC -->
-<div class="p-3 bg-surface-container-low rounded-xl border border-white/5">
-<div class="flex justify-between items-center mb-2">
-<span class="text-body-sm font-bold text-on-surface">BTC Address</span>
-<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Manual</span>
+<div class="p-3 bg-surface-container-low rounded-xl border border-white/5 mt-4">
+    <div class="flex items-center gap-sm mb-3">
+        <span class="material-symbols-outlined text-primary text-[18px]">add_circle</span>
+        <span class="text-body-sm font-bold text-on-surface">Add New Currency</span>
+    </div>
+    <div class="space-y-3">
+        <div>
+            <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Currency Name</label>
+            <input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="e.g. BNB, TRX, SOL">
+        </div>
+        <div>
+            <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Wallet Address</label>
+            <input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="Enter address...">
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="flex-grow">
+                <label class="text-[10px] text-on-surface-variant uppercase mb-1 block">Min Deposit</label>
+                <input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm py-1 px-2 text-on-surface" type="text" value="0.00">
+            </div>
+            <button class="mt-5 p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center" onclick="handleGenericAction(this, 'Adding...', 'New Currency Added Successfully')">
+                <span class="material-symbols-outlined">add</span>
+            </button>
+        </div>
+    </div>
+</div><button class="w-full py-2 border border-dashed border-white/10 rounded-lg text-on-surface-variant text-[11px] hover:bg-white/5 uppercase font-bold" onclick="showToast('New gateway added')">Add Another Gateway (BNB, TRX, SOL)</button>
 </div>
-<input class="w-full bg-black/20 border-white/5 rounded-lg text-body-sm mb-2 text-on-surface-variant" type="text" value="bc1q...x88z">
-<div class="flex items-center gap-2">
-<span class="text-[10px] text-on-surface-variant uppercase">Min Dep:</span>
-<input class="w-24 bg-black/20 border-white/5 rounded-lg text-[11px] py-0.5 px-2" type="text" value="0.001">
-</div>
-</div>
-<button class="w-full py-2 border border-dashed border-white/10 rounded-lg text-on-surface-variant text-[11px] hover:bg-white/5 uppercase font-bold">Add Another Gateway (BNB, TRX, SOL)</button>
-</div>
-<button class="w-full mt-4 py-2 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Gateways</button>
+<button class="w-full mt-4 py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Saving...', 'Gateways Saved')">Save Gateways</button>
 </section>
 </div>
-<!-- Investment Plans Management -->
-<section class="mb-lg animate-entrance" style="animation-delay: 0.5s">
-<div class="flex justify-between items-center mb-md">
-<div class="flex items-center gap-sm">
-<span class="material-symbols-outlined text-primary">account_tree</span>
-<h2 class="text-headline-md font-bold text-on-surface">Investment Plan Management</h2>
+<!-- Firebase Configuration -->
+<section class="glass-panel p-lg rounded-2xl mb-lg animate-entrance" style="animation-delay: 0.5s">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">cloud_sync</span>
+<h3 class="text-headline-md font-bold">Firebase Configuration</h3>
 </div>
-<button class="flex items-center gap-xs px-md py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg font-bold text-[12px] uppercase tracking-tighter">
-<span class="material-symbols-outlined text-[18px]">add_circle</span> Add Plan
-            </button>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">API Key</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="password" value="AIzaSy_MOCK_KEY">
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
-<div class="glass-panel p-md rounded-xl border-t-2 border-t-primary">
-<div class="flex justify-between mb-md">
-<h4 class="font-bold text-on-surface">Starter Node</h4>
-<span class="material-symbols-outlined text-primary">edit</span>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Auth Domain</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="yoobit-prod.firebaseapp.com">
 </div>
-<div class="space-y-sm">
-<div class="flex justify-between text-[12px]">
-<span class="text-on-surface-variant uppercase">Min Deposit</span>
-<span class="text-on-surface font-bold font-mono">$100.00</span>
 </div>
-<div class="flex justify-between text-[12px]">
-<span class="text-on-surface-variant uppercase">Daily Profit</span>
-<span class="text-secondary font-bold font-mono">2.5%</span>
+<div class="space-y-md">
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Project ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="yoobit-crypto-terminal">
 </div>
-<div class="flex justify-between text-[12px]">
-<span class="text-on-surface-variant uppercase">Duration</span>
-<span class="text-on-surface font-bold font-mono">30 Days</span>
+<div>
+<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">App ID</label>
+<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" value="1:12345:web:abc123">
 </div>
 </div>
 </div>
-<div class="border-2 border-dashed border-white/5 rounded-xl p-md flex flex-col items-center justify-center text-on-surface-variant hover:bg-white/5 transition-colors cursor-pointer group">
-<span class="material-symbols-outlined text-[32px] mb-2 group-hover:scale-110 transition-transform">post_add</span>
-<p class="text-[12px] font-bold uppercase tracking-widest">Define New Plan</p>
-</div>
-</div>
+<button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" id="save-firebase-btn">
+            Save Firebase Config
+        </button>
 </section>
 <!-- Support & Bot -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl animate-entrance" style="animation-delay: 0.6s;">
@@ -496,7 +487,7 @@
 <input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" type="text" value="yoobit_support_hq">
 </div>
 </div>
-<button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5">Update Handle</button>
+<button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5 flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Updating...', 'Handle Updated')">Update Handle</button>
 </div>
 </section>
 <section class="glass-panel p-lg rounded-2xl">
@@ -513,57 +504,8 @@
 </div>
 <p class="text-[11px] text-on-surface-variant/60 mt-2 italic">* Global username for referral generation.</p>
 </div>
-<button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Bot Configuration</button>
+<button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Saving...', 'Bot Config Updated')">Save Bot Configuration</button>
 </div>
-</section><section class="glass-panel p-lg rounded-2xl md:col-span-2">
-<div class="flex items-center gap-sm mb-md">
-<span class="material-symbols-outlined text-primary">cloud_sync</span>
-<h3 class="text-headline-md font-bold">Firebase Configuration</h3>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-<div class="space-y-md">
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">API Key</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="password" placeholder="AIzaSy...">
-</div>
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Auth Domain</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id.firebaseapp.com">
-</div>
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Project ID</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id-123">
-</div>
-</div>
-<div class="space-y-md">
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Storage Bucket</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="project-id.appspot.com">
-</div>
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">Messaging Sender ID</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="1234567890">
-</div>
-<div>
-<label class="text-label-md text-on-surface-variant uppercase tracking-widest mb-2 block">App ID</label>
-<input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface focus:ring-primary focus:border-primary" type="text" placeholder="1:12345:web:abc123">
-</div>
-</div>
-</div>
-<button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Firebase Config</button>
-</section>
-<section class="glass-panel p-lg rounded-2xl md:col-span-2">
-<div class="flex justify-between items-center mb-md">
-<div class="flex items-center gap-sm">
-<span class="material-symbols-outlined text-primary">description</span>
-<h3 class="text-headline-md font-bold">Legal Framework</h3>
-</div>
-<button class="text-[11px] font-bold text-primary uppercase">Fullscreen</button>
-</div>
-<textarea class="w-full h-24 bg-surface-container-low border-white/10 rounded-lg text-body-sm text-on-surface-variant custom-scrollbar p-3" placeholder="Enter terms manually...">1. Financial nodes are subject to market volatility...
-2. Withdrawals processed within 24 standard terminal hours...
-3. Anti-money laundering protocols enforced strictly...</textarea>
-<button class="w-full mt-4 py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5">Push Legal Update</button>
 </section>
 </div>
 </main>
@@ -587,7 +529,7 @@
 <span class="font-bold text-[9px] uppercase tracking-tighter leading-none mt-1">Admin</span>
 </a>
 </div>
-<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all duration-200 group">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all duration-200 group" onclick="showToast('Opening System Config...')">
 <span class="material-symbols-outlined group-hover:scale-110 transition-transform">engineering</span>
 <span class="font-bold text-[10px] mt-1 uppercase tracking-tighter">System</span>
 </button>
@@ -596,7 +538,56 @@
 <span class="font-bold text-[10px] mt-1 uppercase tracking-tighter">Root</span>
 </a>
 </nav>
+<!-- JavaScript Logic -->
 <script>
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        const borderColor = type === 'success' ? 'border-l-secondary' : 'border-l-error';
+        const icon = type === 'success' ? 'check_circle' : 'error';
+        const iconColor = type === 'success' ? 'text-secondary' : 'text-error';
+
+        toast.className = `fixed top-20 left-1/2 -translate-x-1/2 z-[100] glass-panel px-lg py-3 rounded-xl border-l-4 ${borderColor} flex items-center gap-sm animate-entrance shadow-2xl`;
+        toast.innerHTML = `
+            <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+            <span class="text-body-sm font-bold text-on-surface">${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, -20px)';
+            toast.style.transition = 'all 0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+    }
+
+    // Generic Action Handler for Buttons
+    function handleGenericAction(btn, loadingText, successText, toastType = 'success') {
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        
+        btn.innerHTML = `<span class="loader"></span> <span>${loadingText}</span>`;
+
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            if (successText) showToast(successText, toastType);
+        }, 1200);
+    }
+
+    // Firebase Save Logic
+    const saveFirebaseBtn = document.getElementById('save-firebase-btn');
+    if (saveFirebaseBtn) {
+        saveFirebaseBtn.addEventListener('click', function() {
+            handleGenericAction(this, 'Syncing Firebase...', 'Firebase Config Saved Successfully');
+        });
+    }
+
+    // Interactive Hover Effects for Glass Panels
     document.querySelectorAll('.glass-panel').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -608,46 +599,14 @@
             card.style.background = 'rgba(23, 32, 43, 0.6)';
         });
     });
+
+    // Notify user of active state on load
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            showToast('Admin Console Synchronized', 'success');
+        }, 800);
+    });
 </script>
 
 
-<script>
-(function() {
-    const saveBtn = document.querySelector('button.bg-primary.text-on-primary.font-bold.rounded-lg.uppercase.tracking-widest.text-\[12px\]:last-of-type');
-    if (!saveBtn) return;
-
-    saveBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const originalText = saveBtn.innerText;
-        saveBtn.innerText = 'Saving...';
-        saveBtn.disabled = true;
-        saveBtn.classList.add('opacity-50');
-
-        // Simulate network delay
-        setTimeout(() => {
-            saveBtn.innerText = originalText;
-            saveBtn.disabled = false;
-            saveBtn.classList.remove('opacity-50');
-
-            // Create Toast Notification
-            const toast = document.createElement('div');
-            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-[100] glass-panel px-lg py-3 rounded-xl border-l-4 border-l-secondary flex items-center gap-sm animate-entrance';
-            toast.innerHTML = `
-                <span class="material-symbols-outlined text-secondary">check_circle</span>
-                <span class="text-body-sm font-bold text-on-surface">Configuration Saved Successfully!</span>
-            `;
-            
-            document.body.appendChild(toast);
-
-            // Remove toast after 3 seconds
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translate(-50%, -20px)';
-                toast.style.transition = 'all 0.5s ease';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
-        }, 1200);
-    });
-})();
-</script></body></html>
+</body></html>
