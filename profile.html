@@ -1,338 +1,231 @@
+<!DOCTYPE html>
+
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>YOOBIT - Investment Plans</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>YOOBIT - Profile</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="./styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#86cfff",
+                        "on-background": "#d9e3f2",
+                        "surface-dim": "#0a141e",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#050f19",
+                        "on-tertiary-container": "#442a00",
+                        "on-tertiary-fixed": "#291800",
+                        "on-secondary": "#003912",
+                        "background": "#0a141e",
+                        "primary-fixed": "#c8e6ff",
+                        "on-surface": "#d9e3f2",
+                        "on-primary-fixed": "#001e2e",
+                        "surface-container-low": "#131c27",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#ffddb3",
+                        "surface-bright": "#303a45",
+                        "primary-fixed-dim": "#86cfff",
+                        "on-surface-variant": "#bec8d1",
+                        "surface-container-highest": "#2c3641",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary-container": "#ce8900",
+                        "on-primary-fixed-variant": "#004c6d",
+                        "on-primary-container": "#00344c",
+                        "outline": "#88929b",
+                        "on-error": "#690005",
+                        "secondary-container": "#02c953",
+                        "on-secondary-container": "#004d1b",
+                        "surface-container": "#17202b",
+                        "secondary-fixed": "#69ff87",
+                        "on-secondary-fixed-variant": "#00531e",
+                        "primary": "#86cfff",
+                        "on-tertiary-fixed-variant": "#624000",
+                        "inverse-primary": "#00658f",
+                        "outline-variant": "#3e4850",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb950",
+                        "tertiary": "#ffb950",
+                        "surface-variant": "#2c3641",
+                        "secondary": "#40e56c",
+                        "primary-container": "#24a1de",
+                        "on-primary": "#00344c",
+                        "inverse-surface": "#d9e3f2",
+                        "surface-container-high": "#212b36",
+                        "on-tertiary": "#452b00",
+                        "surface": "#0a141e",
+                        "inverse-on-surface": "#28313c",
+                        "secondary-fixed-dim": "#3ce36a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "container-margin": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "numeric-data": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "numeric-data": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-card {
-            background: rgba(22, 37, 52, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .pro-glow {
-            box-shadow: 0 0 20px rgba(134, 207, 255, 0.2);
-        }
-        .elite-glow {
-            box-shadow: 0 0 20px rgba(255, 185, 80, 0.2);
-        }
         body {
             background-color: #0a141e;
             color: #d9e3f2;
-            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .float-anim {
-            animation: float 6s ease-in-out infinite;
+        .profile-list-item:active {
+            background-color: rgba(44, 54, 65, 0.5);
         }
     </style>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "tertiary": "#ffb950",
-                      "on-secondary": "#003912",
-                      "secondary": "#40e56c",
-                      "surface-dim": "#0a141e",
-                      "on-error-container": "#ffdad6",
-                      "inverse-surface": "#d9e3f2",
-                      "surface-container-lowest": "#050f19",
-                      "inverse-on-surface": "#28313c",
-                      "secondary-fixed": "#69ff87",
-                      "tertiary-container": "#ce8900",
-                      "on-surface": "#d9e3f2",
-                      "surface": "#0a141e",
-                      "outline": "#88929b",
-                      "on-tertiary-container": "#442a00",
-                      "on-tertiary": "#452b00",
-                      "on-secondary-fixed-variant": "#00531e",
-                      "on-tertiary-fixed": "#291800",
-                      "primary-fixed": "#c8e6ff",
-                      "surface-bright": "#303a45",
-                      "on-secondary-fixed": "#002108",
-                      "surface-container-low": "#131c27",
-                      "on-primary": "#00344c",
-                      "secondary-container": "#02c953",
-                      "on-error": "#690005",
-                      "surface-variant": "#2c3641",
-                      "on-surface-variant": "#bec8d1",
-                      "surface-container-highest": "#2c3641",
-                      "secondary-fixed-dim": "#3ce36a",
-                      "background": "#0a141e",
-                      "inverse-primary": "#00658f",
-                      "on-tertiary-fixed-variant": "#624000",
-                      "on-primary-container": "#00344c",
-                      "error": "#ffb4ab",
-                      "on-background": "#d9e3f2",
-                      "on-primary-fixed": "#001e2e",
-                      "tertiary-fixed-dim": "#ffb950",
-                      "on-primary-fixed-variant": "#004c6d",
-                      "on-secondary-container": "#004d1b",
-                      "primary": "#86cfff",
-                      "tertiary-fixed": "#ffddb3",
-                      "primary-fixed-dim": "#86cfff",
-                      "surface-container": "#17202b",
-                      "outline-variant": "#3e4850",
-                      "surface-container-high": "#212b36",
-                      "primary-container": "#24a1de",
-                      "error-container": "#93000a",
-                      "surface-tint": "#86cfff"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.5rem",
-                      "lg": "0.5rem",
-                      "xl": "0.75rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "md": "16px",
-                      "container-margin": "16px",
-                      "lg": "24px",
-                      "base": "4px",
-                      "xs": "4px",
-                      "sm": "8px",
-                      "xl": "32px",
-                      "gutter": "12px"
-              },
-              "fontFamily": {
-                      "body-lg": ["Inter"],
-                      "body-sm": ["Inter"],
-                      "headline-lg": ["Inter"],
-                      "headline-md": ["Inter"],
-                      "label-md": ["Inter"],
-                      "headline-lg-mobile": ["Inter"],
-                      "numeric-data": ["Inter"]
-              },
-              "fontSize": {
-                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                      "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "headline-md": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
-                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                      "headline-lg-mobile": ["24px", {"lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                      "numeric-data": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
-              }
-            },
-          },
-        }
-    </script>
 </head>
-<body class="bg-surface text-on-surface min-h-screen pb-32">
+<body class="flex flex-col min-h-screen">
 <!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 border-b border-white/10 bg-surface flex justify-between items-center h-16 px-container-margin">
-<div class="flex items-center gap-3 active:scale-95 transition-transform cursor-pointer" onclick="window.location.href='./index.html'">
-<span class="material-symbols-outlined text-primary text-headline-md" data-icon="account_balance_wallet">account_balance_wallet</span>
-<h1 class="text-headline-md font-bold text-primary">YOOBIT</h1>
-</div>
+<header class="bg-surface-container dark:bg-surface-container border-b border-white/10 flex justify-between items-center px-container-margin w-full fixed top-0 z-50 h-[3.5rem] pt-[env(safe-area-inset-top)]">
 <div class="flex items-center gap-2">
-<button class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">YOOBIT</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-bright/10 transition-colors duration-200">
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
 </button>
-</div>
 </header>
-<main class="pt-24 px-container-margin space-y-xl">
-<!-- Balance Overview Section -->
-<section class="grid grid-cols-1 gap-md">
-<div class="glass-card rounded-xl p-lg space-y-sm">
-<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-widest">Total Balance</span>
-<div class="flex items-baseline gap-2">
-<span class="text-headline-lg font-headline-lg text-primary">$12,450.00</span>
-<span class="text-secondary font-label-md text-label-md">+2.4%</span>
+<!-- Main Content -->
+<main class="flex-grow pb-20 px-container-margin pb-[calc(5rem+env(safe-area-inset-bottom))] pt-[calc(3.5rem+env(safe-area-inset-top))]">
+<!-- User Header Section -->
+<section class="py-xl flex flex-col items-center">
+<div class="relative mb-md">
+<div class="w-24 h-24 rounded-full border-2 border-primary p-1 bg-surface-container">
+<img alt="User Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIpxcShL7AkrdswcTTzUsFULg3pOAF7_i-xt86KMw2dgusMQni-7R9NPn06PzamZ3ybtEFb-izurlT09jJz6sGiVW9rkFVR_G7A92HNLJ4hQJiaBiSoayHHydrMUlkhxl2Mov6DIDTNXqIoDlsbllpO3q1saA94_7NJVZqWdHWn2lRxnz_hup1KNEv6p7uOTfS7RrcvzBED27IgTOwpJU00a36SS3xmrMfNJXJj3zIeflZXWl0uTLz"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-secondary rounded-full p-1 border-4 border-background flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary text-[16px] font-bold" data-icon="check" style='font-variation-settings: "wght" 700;'>check</span>
 </div>
 </div>
-<div class="grid grid-cols-2 gap-md">
-<div class="glass-card rounded-xl p-md space-y-xs">
-<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-widest">Earning</span>
-<div class="text-numeric-data font-numeric-data text-on-surface">$840.20</div>
-</div>
-<div class="glass-card rounded-xl p-md space-y-xs">
-<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-widest">Referral</span>
-<div class="text-numeric-data font-numeric-data text-on-surface">$125.00</div>
+<div class="text-center">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">John Doe</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">@johndoe_investor</p>
+<div class="mt-sm inline-flex items-center gap-1.5 px-3 py-1 bg-secondary/15 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-[14px]" data-icon="verified" style='font-variation-settings: "FILL" 1;'>verified</span>
+<span class="font-label-md text-label-md text-secondary">Verified Investor</span>
 </div>
 </div>
 </section>
-<!-- Transaction Controls -->
-<section class="grid grid-cols-2 gap-md">
-<button class="flex items-center justify-center gap-2 h-12 bg-primary text-on-primary rounded-lg font-label-md text-label-md active:scale-95 transition-all shadow-lg hover:brightness-110" onclick="document.getElementById('deposit-modal').classList.remove('hidden')">
-<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>Crypto Deposit
+<!-- Profile Sections List -->
+<section class="space-y-base gap-md">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="redeem">redeem</span>
+<h3 class="font-headline-md text-on-surface">Referral Program</h3>
+</div>
+<span class="text-label-md text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">Earn $50</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-md">Invite friends via Telegram and earn rewards for every successful investment they make.</p>
+<div class="flex items-center gap-2 p-2 bg-surface-container-highest rounded-lg border border-outline-variant" data-bot-username="YOOBITBot" data-user-id="johndoe_123" id="referral-link-container">
+<span class="flex-grow font-body-sm text-on-surface truncate px-2" id="referral-url-display">https://t.me/YOOBITBot/app?startapp=johndoe_123</span>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md uppercase tracking-wider active:scale-95 transition-all h-10 shrink-0" onclick="const container = document.getElementById('referral-link-container'); const url = `https://t.me/${container.dataset.botUsername}/app?startapp=${container.dataset.userId}`; navigator.clipboard.writeText(url); alert('Link copied to clipboard!');">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+<span class="">Copy Link</span>
 </button>
-<button class="flex items-center justify-center gap-2 h-12 bg-surface-variant text-on-surface rounded-lg font-label-md text-label-md active:scale-95 transition-all hover:bg-surface-bright" onclick="document.getElementById('withdrawal-modal').classList.remove('hidden')">
-<span class="material-symbols-outlined" data-icon="payments">payments</span>Crypto Withdrawal
+</div>
+<div class="profile-list-item flex items-center justify-between p-md bg-surface-container-highest rounded-xl transition-all duration-200 cursor-pointer mt-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container text-primary">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Terms &amp; Conditions</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Review our service agreements</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="profile-list-item flex items-center justify-between p-md bg-surface-container-highest rounded-xl transition-all duration-200 cursor-pointer mt-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container text-primary">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Support</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Contact our 24/7 support team</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</section>
+<!-- Logout Button -->
+<button class="w-full mt-xl py-4 flex items-center justify-center gap-2 rounded-xl bg-error-container/20 text-error border border-error-container/30 active:scale-[0.98] transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Log Out</span>
 </button>
-</section>
-<!-- Hero Section -->
-<section class="space-y-sm">
-<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Available Tiers</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Maximize your wealth with our institutional-grade investment tiers.</p>
-</section>
-<!-- Plans Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
-<!-- Starter Plan -->
-<div class="glass-card rounded-xl p-lg flex flex-col space-y-lg transition-all duration-300 hover:-translate-y-1" style="border-color: rgba(255, 255, 255, 0.1);">
-<div class="space-y-xs">
-<span class="text-primary font-label-md text-label-md tracking-widest uppercase">Tier I</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Starter</h3>
-</div>
-<div class="space-y-base"><div class="flex items-baseline gap-1"><span class="font-headline-lg text-headline-lg text-secondary">2%</span></div><div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">30 Days</div></div>
-<div class="space-y-sm py-md border-y border-white/5">
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Min Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">$500</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Max Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">$2,499</span>
-</div>
-</div>
-<button class="w-full h-12 bg-surface-variant text-on-surface font-label-md text-label-md rounded-lg active:scale-95 transition-all hover:bg-surface-bright">
-                    Invest Now
-                </button>
-</div>
-<!-- Pro Plan (Featured) -->
-<div class="glass-card pro-glow relative rounded-xl p-lg flex flex-col space-y-lg border-primary/30 transition-all duration-300 hover:-translate-y-2 scale-105 z-10" style="border-color: rgba(255, 255, 255, 0.1);">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase shadow-lg">
-                    Most Popular
-                </div>
-<div class="space-y-xs">
-<span class="text-primary font-label-md text-label-md tracking-widest uppercase">Tier II</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Pro</h3>
-</div>
-<div class="space-y-base"><div class="flex items-baseline gap-1"><span class="font-headline-lg text-headline-lg text-secondary">5%</span></div><div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">45 Days</div></div>
-<div class="space-y-sm py-md border-y border-white/5">
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Min Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">$2,500</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Max Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">$9,999</span>
-</div>
-</div>
-<button class="w-full h-12 bg-primary text-on-primary font-label-md text-label-md rounded-lg active:scale-95 transition-all shadow-lg hover:brightness-110">
-                    Invest Now
-                </button>
-</div>
-<!-- Elite Plan -->
-<div class="glass-card rounded-xl p-lg flex flex-col space-y-lg transition-all duration-300 hover:-translate-y-1" style="border-color: rgba(255, 255, 255, 0.1);">
-<div class="space-y-xs">
-<span class="text-tertiary font-label-md text-label-md tracking-widest uppercase">Tier III</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Elite</h3>
-</div>
-<div class="space-y-base"><div class="flex items-baseline gap-1"><span class="font-headline-lg text-headline-lg text-secondary">8%</span></div><div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">60 Days</div></div>
-<div class="space-y-sm py-md border-y border-white/5">
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Min Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">$10,000</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Max Invest</span>
-<span class="font-numeric-data text-numeric-data text-on-surface">Unlimited</span>
-</div>
-</div>
-<button class="w-full h-12 bg-tertiary text-on-tertiary font-label-md text-label-md rounded-lg active:scale-95 transition-all hover:brightness-110">
-                    Invest Now
-                </button>
-</div>
-</div>
-<!-- Decorative Info Card -->
-<div class="relative overflow-hidden rounded-xl p-lg glass-card flex flex-col md:flex-row items-center gap-lg" style="border-color: rgba(255, 255, 255, 0.1);">
-<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
-<div class="relative z-10 flex-shrink-0 w-16 h-16 bg-primary-container/20 rounded-xl flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-4xl float-anim" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
-</div>
-<div class="relative z-10 space-y-xs text-center md:text-left">
-<h4 class="font-headline-md text-headline-md text-on-surface">Institutional Grade Security</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl">All investments are protected by Tier-1 bank protocols and multi-signature cold storage vaults. Your capital growth is managed by our proprietary algorithmic engine.</p>
-</div>
-</div>
 </main>
 <!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 rounded-t-xl border-t border-white/10 bg-surface-container flex justify-around items-center h-20 px-2 pb-safe">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all duration-200" href="./index.html">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<nav class="bg-surface-container dark:bg-surface-container border-t border-white/10 fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 z-50 pb-[env(safe-area-inset-bottom)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./index.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
 <span class="font-label-md text-label-md">Home</span>
 </a>
-<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-all duration-200" href="./invest.html">
-<span class="material-symbols-outlined" data-icon="show_chart" style="font-variation-settings: 'FILL' 1;">show_chart</span>
+<!-- Invest -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./invest.html">
+<span class="material-symbols-outlined" data-icon="show_chart">show_chart</span>
 <span class="font-label-md text-label-md">Invest</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all duration-200" href="./history.html">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<!-- History -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./history.html">
+<span class="material-symbols-outlined" data-icon="history">history</span>
 <span class="font-label-md text-label-md">History</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all duration-200" href="./profile.html">
-<span class="material-symbols-outlined" data-icon="person">person</span>
+<!-- Profile (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold bg-primary/10 rounded-xl px-3 py-1 active:scale-95 transition-all duration-150" href="./profile.html">
+<span class="material-symbols-outlined" data-icon="person" style='font-variation-settings: "FILL" 1;'>person</span>
 <span class="font-label-md text-label-md">Profile</span>
 </a>
 </nav>
 <script>
-        // Micro-interaction for buttons
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('mousedown', () => {
-                button.style.transform = 'scale(0.96)';
+        // Micro-interaction for list items
+        document.querySelectorAll('.profile-list-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.classList.add('scale-[0.99]');
             });
-            button.addEventListener('mouseup', () => {
-                button.style.transform = 'scale(1)';
-            });
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'scale(1)';
-            });
-        });
-
-        // Dynamic background effect
-        const body = document.querySelector('body');
-        body.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.glass-card');
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const cardX = (e.clientX - rect.left) / rect.width;
-                const cardY = (e.clientY - rect.top) / rect.height;
-                
-                if (cardX > 0 && cardX < 1 && cardY > 0 && cardY < 1) {
-                    card.style.borderColor = `rgba(134, 207, 255, ${0.1 + (cardX * 0.2)})`;
-                } else {
-                    card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                }
+            item.addEventListener('touchend', function() {
+                this.classList.remove('scale-[0.99]');
             });
         });
     </script>
-<!-- Deposit Modal -->
-<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-container-margin bg-surface/80 backdrop-blur-sm" id="deposit-modal">
-<div class="glass-card w-full max-w-xl rounded-xl p-lg space-y-lg relative">
-<button class="absolute top-4 right-4 text-on-surface-variant" onclick="document.getElementById('deposit-modal').classList.add('hidden')"><span class="material-symbols-outlined">close</span></button>
-<div class="space-y-xs"><h3 class="font-headline-md text-headline-md text-on-surface">Crypto Deposit</h3><p class="text-body-sm text-on-surface-variant">Select a network to view the deposit address.</p></div>
-<div class="space-y-md">
-<div class="space-y-sm"><label class="font-label-md text-label-md text-on-surface-variant uppercase">Select Network</label><select class="w-full bg-surface-container border-white/10 rounded-lg text-on-surface p-md"><option>USDT-TRC20</option><option>BTC</option><option>Solana</option></select></div>
-<div class="p-md bg-surface-container rounded-lg border border-white/5 space-y-sm"><label class="font-label-md text-label-md text-on-surface-variant uppercase">Wallet Address</label><div class="flex items-center justify-between gap-2"><code class="text-primary font-numeric-data break-all">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</code><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">content_copy</span></div></div>
-<p class="text-body-sm text-secondary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">info</span>Deposits are pending admin approval.</p>
-</div>
-<button class="w-full h-12 bg-primary text-on-primary rounded-lg font-label-md text-label-md" onclick="document.getElementById('deposit-modal').classList.add('hidden')">Done</button>
-</div>
-</div>
-<!-- Withdrawal Modal -->
-<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-container-margin bg-surface/80 backdrop-blur-sm" id="withdrawal-modal">
-<div class="glass-card w-full max-w-xl rounded-xl p-lg space-y-lg relative">
-<button class="absolute top-4 right-4 text-on-surface-variant" onclick="document.getElementById('withdrawal-modal').classList.add('hidden')"><span class="material-symbols-outlined">close</span></button>
-<div class="space-y-xs"><h3 class="font-headline-md text-headline-md text-on-surface">Crypto Withdrawal</h3><p class="text-body-sm text-on-surface-variant">Submit your withdrawal request.</p></div>
-<form class="space-y-md">
-<div class="space-y-sm"><label class="font-label-md text-label-md text-on-surface-variant uppercase">Wallet Address</label><input class="w-full bg-surface-container border-white/10 rounded-lg text-on-surface p-md" placeholder="Enter your address" type="text"/></div>
-<div class="grid grid-cols-2 gap-md">
-<div class="space-y-sm"><label class="font-label-md text-label-md text-on-surface-variant uppercase">Network</label><select class="w-full bg-surface-container border-white/10 rounded-lg text-on-surface p-md"><option>USDT-TRC20</option><option>BTC</option><option>Solana</option></select></div>
-<div class="space-y-sm"><label class="font-label-md text-label-md text-on-surface-variant uppercase">Amount</label><input class="w-full bg-surface-container border-white/10 rounded-lg text-on-surface p-md" placeholder="0.00" type="number"/></div>
-</div>
-<p class="text-body-sm text-tertiary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">verified_user</span>Withdrawals processed after admin verification.</p>
-<button class="w-full h-12 bg-primary text-on-primary rounded-lg font-label-md text-label-md" onclick="document.getElementById('withdrawal-modal').classList.add('hidden')" type="button">Submit Request</button>
-</form>
-</div>
-</div>
 </body></html>
