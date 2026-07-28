@@ -611,4 +611,43 @@
 </script>
 
 
-</body></html>
+<script>
+(function() {
+    const saveBtn = document.querySelector('button.bg-primary.text-on-primary.font-bold.rounded-lg.uppercase.tracking-widest.text-\[12px\]:last-of-type');
+    if (!saveBtn) return;
+
+    saveBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const originalText = saveBtn.innerText;
+        saveBtn.innerText = 'Saving...';
+        saveBtn.disabled = true;
+        saveBtn.classList.add('opacity-50');
+
+        // Simulate network delay
+        setTimeout(() => {
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('opacity-50');
+
+            // Create Toast Notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-[100] glass-panel px-lg py-3 rounded-xl border-l-4 border-l-secondary flex items-center gap-sm animate-entrance';
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-secondary">check_circle</span>
+                <span class="text-body-sm font-bold text-on-surface">Configuration Saved Successfully!</span>
+            `;
+            
+            document.body.appendChild(toast);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -20px)';
+                toast.style.transition = 'all 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }, 1200);
+    });
+})();
+</script></body></html>
