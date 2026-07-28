@@ -5,8 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <title>YOOBIT - Profile</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="./styles.css" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -130,17 +130,23 @@
 <!-- User Header Section -->
 <section class="py-xl flex flex-col items-center">
 <div class="relative mb-md">
-<div class="w-24 h-24 rounded-full border-2 border-primary p-1 bg-surface-container">
-<img alt="User Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIpxcShL7AkrdswcTTzUsFULg3pOAF7_i-xt86KMw2dgusMQni-7R9NPn06PzamZ3ybtEFb-izurlT09jJz6sGiVW9rkFVR_G7A92HNLJ4hQJiaBiSoayHHydrMUlkhxl2Mov6DIDTNXqIoDlsbllpO3q1saA94_7NJVZqWdHWn2lRxnz_hup1KNEv6p7uOTfS7RrcvzBED27IgTOwpJU00a36SS3xmrMfNJXJj3zIeflZXWl0uTLz"/>
+<div class="w-24 h-24 rounded-full border-2 border-primary p-1 bg-surface-container overflow-hidden">
+<img alt="User Profile" class="w-full h-full rounded-full object-cover" id="user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIpxcShL7AkrdswcTTzUsFULg3pOAF7_i-xt86KMw2dgusMQni-7R9NPn06PzamZ3ybtEFb-izurlT09jJz6sGiVW9rkFVR_G7A92HNLJ4hQJiaBiSoayHHydrMUlkhxl2Mov6DIDTNXqIoDlsbllpO3q1saA94_7NJVZqWdHWn2lRxnz_hup1KNEv6p7uOTfS7RrcvzBED27IgTOwpJU00a36SS3xmrMfNJXJj3zIeflZXWl0uTLz"/>
 </div>
 <div class="absolute bottom-0 right-0 bg-secondary rounded-full p-1 border-4 border-background flex items-center justify-center">
 <span class="material-symbols-outlined text-on-secondary text-[16px] font-bold" data-icon="check" style='font-variation-settings: "wght" 700;'>check</span>
 </div>
 </div>
 <div class="text-center">
-<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">John Doe</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">@johndoe_investor</p>
-<div class="mt-sm inline-flex items-center gap-1.5 px-3 py-1 bg-secondary/15 rounded-full border border-secondary/20">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface" id="user-full-name">John Doe</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="user-handle">@johndoe_investor</p>
+<p class="font-label-md text-label-md text-outline mt-1 opacity-60" id="user-id-display">ID: 123456789</p>
+<!-- Dynamic Balance Card -->
+<div class="mt-md px-lg py-sm bg-surface-container-high rounded-xl border border-outline-variant/30 flex flex-col items-center">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Available Balance</span>
+<span class="font-numeric-data text-[24px] text-secondary" id="user-balance">$1,240.50</span>
+</div>
+<div class="mt-md inline-flex items-center gap-1.5 px-3 py-1 bg-secondary/15 rounded-full border border-secondary/20">
 <span class="material-symbols-outlined text-secondary text-[14px]" data-icon="verified" style='font-variation-settings: "FILL" 1;'>verified</span>
 <span class="font-label-md text-label-md text-secondary">Verified Investor</span>
 </div>
@@ -156,11 +162,11 @@
 <span class="text-label-md text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">Earn $50</span>
 </div>
 <p class="font-body-sm text-on-surface-variant mb-md">Invite friends via Telegram and earn rewards for every successful investment they make.</p>
-<div class="flex items-center gap-2 p-2 bg-surface-container-highest rounded-lg border border-outline-variant" data-bot-username="YOOBITBot" data-user-id="johndoe_123" id="referral-link-container">
-<span class="flex-grow font-body-sm text-on-surface truncate px-2" id="referral-url-display">https://t.me/YOOBITBot/app?startapp=johndoe_123</span>
-<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md uppercase tracking-wider active:scale-95 transition-all h-10 shrink-0" onclick="const container = document.getElementById('referral-link-container'); const url = `https://t.me/${container.dataset.botUsername}/app?startapp=${container.dataset.userId}`; navigator.clipboard.writeText(url); alert('Link copied to clipboard!');">
+<div class="flex items-center gap-2 p-2 bg-surface-container-highest rounded-lg border border-outline-variant" id="referral-link-container">
+<span class="flex-grow font-body-sm text-on-surface truncate px-2" id="referral-url-display">https://t.me/YOOBITBot/app?startapp=default</span>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md uppercase tracking-wider active:scale-95 transition-all h-10 shrink-0" id="copy-btn">
 <span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
-<span class="">Copy Link</span>
+<span class="">Copy</span>
 </button>
 </div>
 <div class="profile-list-item flex items-center justify-between p-md bg-surface-container-highest rounded-xl transition-all duration-200 cursor-pointer mt-md">
@@ -196,32 +202,74 @@
 </main>
 <!-- BottomNavBar -->
 <nav class="bg-surface-container dark:bg-surface-container border-t border-white/10 fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 z-50 pb-[env(safe-area-inset-bottom)]">
-<!-- Home -->
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./index.html">
 <span class="material-symbols-outlined" data-icon="home">home</span>
 <span class="font-label-md text-label-md">Home</span>
 </a>
-<!-- Invest -->
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./invest.html">
 <span class="material-symbols-outlined" data-icon="show_chart">show_chart</span>
 <span class="font-label-md text-label-md">Invest</span>
 </a>
-<!-- History -->
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-all duration-150" href="./history.html">
 <span class="material-symbols-outlined" data-icon="history">history</span>
 <span class="font-label-md text-label-md">History</span>
 </a>
-<!-- Profile (Active) -->
 <a class="flex flex-col items-center justify-center text-primary font-bold bg-primary/10 rounded-xl px-3 py-1 active:scale-95 transition-all duration-150" href="./profile.html">
 <span class="material-symbols-outlined" data-icon="person" style='font-variation-settings: "FILL" 1;'>person</span>
 <span class="font-label-md text-label-md">Profile</span>
 </a>
 </nav>
 <script>
+        // Telegram Web App Integration
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const user = tg.initDataUnsafe?.user || {
+            id: '88421095',
+            first_name: 'John',
+            last_name: 'Doe',
+            username: 'johndoe_investor',
+            photo_url: null
+        };
+
+        const BOT_USERNAME = 'YOOBITBot';
+
+        // Update UI with dynamic user data
+        document.getElementById('user-full-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+        document.getElementById('user-handle').textContent = user.username ? `@${user.username}` : 'Private User';
+        document.getElementById('user-id-display').textContent = `ID: ${user.id}`;
+        
+        if (user.photo_url) {
+            document.getElementById('user-avatar').src = user.photo_url;
+        }
+
+        // Mock Dynamic Balance
+        const mockBalance = (Math.random() * 5000 + 1000).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        });
+        document.getElementById('user-balance').textContent = mockBalance;
+
+        // Referral Link Logic
+        const referralUrl = `https://t.me/${BOT_USERNAME}/app?startapp=${user.id}`;
+        document.getElementById('referral-url-display').textContent = referralUrl;
+
+        document.getElementById('copy-btn').onclick = () => {
+            navigator.clipboard.writeText(referralUrl).then(() => {
+                const originalText = document.getElementById('copy-btn').querySelector('span:not(.material-symbols-outlined)').textContent;
+                document.getElementById('copy-btn').querySelector('span:not(.material-symbols-outlined)').textContent = 'COPIED!';
+                tg.HapticFeedback.notificationOccurred('success');
+                setTimeout(() => {
+                    document.getElementById('copy-btn').querySelector('span:not(.material-symbols-outlined)').textContent = originalText;
+                }, 2000);
+            });
+        };
+
         // Micro-interaction for list items
         document.querySelectorAll('.profile-list-item').forEach(item => {
             item.addEventListener('touchstart', function() {
                 this.classList.add('scale-[0.99]');
+                tg.HapticFeedback.impactOccurred('light');
             });
             item.addEventListener('touchend', function() {
                 this.classList.remove('scale-[0.99]');
