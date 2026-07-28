@@ -7,7 +7,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="./styles.css" rel="stylesheet"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -164,12 +164,28 @@
 </head>
 <body class="flex flex-col min-h-screen">
 <script>
-    // Simple Admin Access Check (Logic Placeholder)
+    // Telegram SDK Authorization Check
     (function() {
-        const isAdmin = localStorage.getItem('yoobit_admin_auth') === 'true';
-        if (!isAdmin && window.location.hostname !== 'localhost') {
-            // Uncomment the redirect for production environments
-            // window.location.href = './index.html';
+        const tg = window.Telegram.WebApp;
+        const authorizedAdmin = "cryptolife15";
+        
+        // Ensure app is expanded
+        tg.expand();
+
+        // Check user object from InitData
+        const user = tg.initDataUnsafe?.user;
+        
+        // Simple redirection if not the authorized admin
+        // Note: In production, this should be verified server-side using initData hash
+        if (user && user.username !== authorizedAdmin && window.location.hostname !== 'localhost') {
+            document.body.innerHTML = `
+                <div class="flex flex-col items-center justify-center min-h-screen p-container-margin text-center">
+                    <span class="material-symbols-outlined text-[64px] text-error mb-md">lock_person</span>
+                    <h1 class="text-headline-lg text-on-surface mb-sm">Access Denied</h1>
+                    <p class="text-on-surface-variant mb-lg">Terminal restricted to root administrator.</p>
+                    <a href="./index.html" class="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold uppercase tracking-widest text-[12px]">Return to Terminal</a>
+                </div>
+            `;
         }
     })();
 </script>
@@ -205,61 +221,113 @@
 </div>
 <!-- User List Section -->
 <section class="mb-lg animate-entrance" style="animation-delay: 0.2s">
-<div class="flex items-center gap-sm mb-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-md">
+<div class="flex items-center gap-sm">
 <span class="material-symbols-outlined text-primary">group</span>
-<h2 class="text-headline-md font-bold text-on-surface">User List Management</h2>
+<h2 class="text-headline-md font-bold text-on-surface">User Registry</h2>
+</div>
+<div class="flex items-center gap-sm bg-surface-container-low border border-white/10 rounded-lg px-3 py-1.5 w-full md:w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0 w-full text-on-surface" placeholder="Search ID or @username" type="text"/>
+</div>
 </div>
 <div class="glass-panel rounded-xl overflow-hidden border border-white/5">
 <div class="overflow-x-auto custom-scrollbar">
-<table class="w-full text-left text-body-sm">
-<thead class="bg-surface-container-high/50 border-b border-white/5 text-on-surface-variant uppercase text-[11px] font-bold">
+<table class="w-full text-left text-body-sm min-w-[700px]">
+<thead class="bg-surface-container-high/50 border-b border-white/5 text-on-surface-variant uppercase text-[10px] font-bold tracking-wider">
 <tr>
-<th class="px-md py-3">User Details</th>
-<th class="px-md py-3">Account ID</th>
-<th class="px-md py-3 text-right">Balance</th>
-<th class="px-md py-3 text-center">Referrals</th>
-<th class="px-md py-3"></th>
+<th class="px-md py-4">User Identity</th>
+<th class="px-md py-4">Account ID</th>
+<th class="px-md py-4 text-right">Balance</th>
+<th class="px-md py-4 text-center">Nodes</th>
+<th class="px-md py-4 text-right">Actions</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-white/5">
-<tr class="hover:bg-white/5 transition-colors">
+<!-- User 1 -->
+<tr class="hover:bg-white/5 transition-colors group">
 <td class="px-md py-4">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">AM</div>
 <div class="flex flex-col">
 <span class="font-bold text-on-surface text-body-lg">Alex Mercer</span>
-<span class="text-primary text-[12px]">@alex_m</span>
+<span class="text-primary text-[11px] font-semibold">@alex_m</span>
+</div>
 </div>
 </td>
 <td class="px-md py-4 font-mono text-on-surface-variant">ID_9921_X</td>
-<td class="px-md py-4 text-right font-bold text-secondary">$12,450.00</td>
+<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$12,450.00</td>
 <td class="px-md py-4 text-center">
-<span class="bg-surface-container-high px-2 py-1 rounded text-[12px]">8 Nodes</span>
+<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">8 ACTIVE</span>
 </td>
 <td class="px-md py-4 text-right">
-<button class="text-primary hover:underline text-[12px] font-bold uppercase tracking-tighter">Edit User</button>
+<div class="flex items-center justify-end gap-2">
+<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
 </td>
 </tr>
-<tr class="hover:bg-white/5 transition-colors">
+<!-- User 2 -->
+<tr class="hover:bg-white/5 transition-colors group">
 <td class="px-md py-4">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">SJ</div>
 <div class="flex flex-col">
 <span class="font-bold text-on-surface text-body-lg">Sarah Johnson</span>
-<span class="text-primary text-[12px]">@sarah_j</span>
+<span class="text-primary text-[11px] font-semibold">@sarah_j</span>
+</div>
 </div>
 </td>
 <td class="px-md py-4 font-mono text-on-surface-variant">ID_8832_B</td>
-<td class="px-md py-4 text-right font-bold text-secondary">$4,820.50</td>
+<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$4,820.50</td>
 <td class="px-md py-4 text-center">
-<span class="bg-surface-container-high px-2 py-1 rounded text-[12px]">3 Nodes</span>
+<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">3 ACTIVE</span>
 </td>
 <td class="px-md py-4 text-right">
-<button class="text-primary hover:underline text-[12px] font-bold uppercase tracking-tighter">Edit User</button>
+<div class="flex items-center justify-end gap-2">
+<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- User 3 (Mock for list scale) -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-md py-4">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary font-bold">MD</div>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface text-body-lg">Mike Doe</span>
+<span class="text-primary text-[11px] font-semibold">@mike_trader</span>
+</div>
+</div>
+</td>
+<td class="px-md py-4 font-mono text-on-surface-variant">ID_4412_Z</td>
+<td class="px-md py-4 text-right font-bold text-secondary text-numeric-data">$1,100.25</td>
+<td class="px-md py-4 text-center">
+<span class="bg-surface-container-high/60 border border-white/5 px-2 py-1 rounded-md text-[11px] font-bold">1 ACTIVE</span>
+</td>
+<td class="px-md py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-3 py-1.5 bg-surface-container-highest/50 hover:bg-primary/20 text-on-surface-variant hover:text-primary rounded-lg transition-all text-[11px] font-bold uppercase tracking-tight border border-white/5">Details</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<button class="w-full py-3 bg-surface-container-high/30 text-on-surface-variant font-bold text-[11px] uppercase tracking-widest border-t border-white/5 hover:bg-primary/5 transition-colors">
-                Load More Registry Data
-            </button>
+<div class="flex items-center justify-between p-md bg-surface-container-high/20 border-t border-white/5">
+<p class="text-[11px] text-on-surface-variant font-medium">Displaying 3 of 1,240 nodes</p>
+<button class="px-lg py-2 bg-surface-container-high/50 text-on-surface font-bold text-[11px] uppercase tracking-widest border border-white/5 hover:bg-primary/10 transition-colors rounded-lg">
+                    Fetch More Registry Data
+                </button>
+</div>
 </div>
 </section>
 <!-- Pending Management -->
@@ -415,7 +483,7 @@
 </div>
 </div>
 </section>
-<!-- Support & Terms -->
+<!-- Support & Bot -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl animate-entrance" style="animation-delay: 0.6s;">
 <section class="glass-panel p-lg rounded-2xl">
 <div class="flex items-center gap-sm mb-md">
@@ -433,7 +501,7 @@
 <button class="w-full py-2.5 bg-surface-container-high text-on-surface font-bold rounded-lg uppercase tracking-widest text-[12px] border border-white/5">Update Handle</button>
 </div>
 </section>
-<section class="glass-panel p-lg rounded-2xl md:col-span-2">
+<section class="glass-panel p-lg rounded-2xl">
 <div class="flex items-center gap-sm mb-md">
 <span class="material-symbols-outlined text-primary">smart_toy</span>
 <h3 class="text-headline-md font-bold">Bot Configuration</h3>
@@ -445,7 +513,7 @@
 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
 <input class="w-full bg-surface-container-low border-white/10 rounded-lg text-on-surface pl-8 focus:ring-primary focus:border-primary" placeholder="YOOBITBot" type="text" value="YOOBITBot"/>
 </div>
-<p class="text-[11px] text-on-surface-variant/60 mt-2 italic">* This username is used globally to generate referral links for all users.</p>
+<p class="text-[11px] text-on-surface-variant/60 mt-2 italic">* Global username for referral generation.</p>
 </div>
 <button class="w-full py-2.5 bg-secondary text-on-secondary font-bold rounded-lg uppercase tracking-widest text-[12px]">Save Bot Configuration</button>
 </div>
