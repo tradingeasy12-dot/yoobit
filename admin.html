@@ -457,7 +457,29 @@
         </div>
     </div>
 </div>
-<button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2 transition-all active:scale-[0.98]" id="save-firebase-btn" onclick="handleGenericAction(this, 'Syncing Firebase...', 'Firebase Config Saved Successfully')">
+<div class="mt-lg pt-lg border-t border-white/5">
+    <div class="flex items-center justify-between mb-md">
+        <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-secondary">database</span>
+            <h4 class="text-body-lg font-bold text-on-surface">Firestore Database Status</h4>
+        </div>
+        <div class="flex items-center gap-xs px-2 py-1 bg-secondary/10 border border-secondary/20 rounded-full">
+            <span class="status-pip bg-secondary animate-pulse"></span>
+            <span class="text-[10px] font-bold text-secondary uppercase">Connected</span>
+        </div>
+    </div>
+    <div class="bg-surface-container-low p-md rounded-xl border border-white/5 mb-md">
+        <p class="text-body-sm text-on-surface-variant mb-2">To enable real-time data synchronization, ensure Firestore is enabled in your Firebase Console under the 'Build' menu.</p>
+        <a href="https://console.firebase.google.com/" target="_blank" class="text-primary text-[11px] font-bold uppercase tracking-wider hover:underline flex items-center gap-1">
+            Open Firebase Console
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+        </a>
+    </div>
+    <button class="w-full py-2 bg-surface-container-high/50 text-on-surface font-bold rounded-lg uppercase tracking-widest text-[11px] border border-white/5 hover:bg-primary/10 transition-colors flex items-center justify-center gap-2" onclick="handleGenericAction(this, 'Testing Connection...', 'Database Connection Verified')">
+        <span class="material-symbols-outlined text-[18px]">network_check</span>
+        Test Database Connection
+    </button>
+</div><button class="w-full mt-lg py-2.5 bg-primary text-on-primary font-bold rounded-lg uppercase tracking-widest text-[12px] flex items-center justify-center gap-2 transition-all active:scale-[0.98]" id="save-firebase-btn" onclick="handleGenericAction(this, 'Syncing Firebase...', 'Firebase Config Saved Successfully')">
     <span class="material-symbols-outlined">save</span>
     Save Firebase Config
 </button></section>
