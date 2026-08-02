@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seam — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14110D; --surface:#1F1A14; --surface-2:#241E17;
+    --copper:#C97A3D; --copper-light:#E0A268; --spark:#4FD8C4;
+    --text:#F2EDE4; --text-muted:#9C948A; --danger:#E15554;
+    --line: rgba(242,237,228,0.09);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Inter',sans-serif;
+  }
+  .login-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+  }
+  .login-card{
+    width:320px; background:var(--surface); border:1px solid var(--line);
+    border-radius:16px; padding:28px;
+  }
+  .login-card h1{
+    font-family:'Space Grotesk',sans-serif; font-size:20px; margin:0 0 4px;
+  }
+  .login-card p{ color:var(--text-muted); font-size:13px; margin:0 0 20px; }
+  input{
+    width:100%; background:var(--surface-2); border:1px solid var(--line);
+    color:var(--text); padding:11px 12px; border-radius:10px; font-size:14px;
+    margin-bottom:12px; font-family:inherit;
+  }
+  input:focus{ outline:none; border-color:var(--copper); }
+  button{
+    width:100%; background:var(--copper); color:#1a1208; border:none;
+    padding:11px; border-radius:10px; font-weight:700; font-size:14px;
+    cursor:pointer; font-family:'Space Grotesk',sans-serif;
+  }
+  button:hover{ background:var(--copper-light); }
+  button.ghost{
+    background:transparent; border:1px solid var(--line); color:var(--text);
+    width:auto; padding:8px 14px; font-size:13px;
+  }
+  .err{ color:var(--danger); font-size:13px; min-height:16px; margin-bottom:8px;}
+
+  #app{ display:none; max-width:960px; margin:0 auto; padding:28px 20px 60px; }
+  .app-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;}
+  .app-top h1{ font-family:'Space Grotesk',sans-serif; font-size:20px; margin:0;}
+
+  .panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:20px; margin-bottom:20px;
+  }
+  .panel h2{ font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 14px;}
+  .settings-row{ display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;}
+  .field{ flex:1; min-width:140px; }
+  .field label{ font-size:11px; color:var(--text-muted); display:block; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.06em;}
+  .field input{ margin-bottom:0; }
+  .settings-row button{ width:auto; padding:11px 18px; white-space:nowrap;}
+
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th{ text-align:left; color:var(--text-muted); font-weight:500; font-size:11px;
+      text-transform:uppercase; letter-spacing:0.06em; padding:8px 10px; border-bottom:1px solid var(--line);}
+  td{ padding:10px; border-bottom:1px solid var(--line); font-family:'JetBrains Mono',monospace; }
+  td.name{ font-family:'Inter',sans-serif; }
+  tr:hover td{ background:rgba(255,255,255,0.02); }
+  .adjust-btn{ width:auto; padding:6px 12px; font-size:12px; background:var(--surface-2); color:var(--text); border:1px solid var(--line);}
+  .adjust-btn:hover{ background:var(--copper); color:#1a1208; }
+  .search-row{ display:flex; gap:10px; margin-bottom:14px;}
+  .search-row input{ margin-bottom:0; }
+
+  .modal-bg{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+    align-items:center; justify-content:center; z-index:50;
+  }
+  .modal{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:22px; width:300px;
+  }
+  .modal h3{ font-family:'Space Grotesk',sans-serif; font-size:15px; margin:0 0 14px;}
+  .modal-actions{ display:flex; gap:8px; }
+  .modal-actions button{ flex:1; }
+  .status{ font-size:12px; color:var(--text-muted); margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Seam Admin</h1>
+    <p>চালিয়ে যেতে admin password দিন</p>
+    <div class="err" id="loginErr">&nbsp;</div>
+    <input type="password" id="passwordInput" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<div id="app">
+  <div class="app-top">
+    <h1>Seam — Admin Panel</h1>
+    <button class="ghost" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="panel">
+    <h2>Mining Settings</h2>
+    <div class="settings-row">
+      <div class="field">
+        <label>প্রতি ট্যাপে coin</label>
+        <input type="number" id="mineAmount" step="0.01" />
+      </div>
+      <div class="field">
+        <label>Cooldown (সেকেন্ড)</label>
+        <input type="number" id="cooldownSeconds" />
+      </div>
+      <button onclick="saveSettings()">Save</button>
+    </div>
+    <div class="status" id="settingsStatus">&nbsp;</div>
+  </div>
+
+  <div class="panel">
+    <h2>Users</h2>
+    <div class="search-row">
+      <input id="searchInput" placeholder="নাম, username বা ID দিয়ে খুঁজুন" oninput="renderUsers()" />
+      <button class="ghost" onclick="loadUsers()">Refresh</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>User</th><th>ID</th><th>Balance</th><th>Total Mined</th><th></th></tr>
+      </thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle">Balance Adjust</h3>
+    <div class="field" style="margin-bottom:10px;">
+      <label>Amount (+/-)</label>
+      <input type="number" id="adjustAmount" step="0.01" />
+    </div>
+    <div class="field" style="margin-bottom:14px;">
+      <label>কারণ (optional)</label>
+      <input type="text" id="adjustReason" />
+    </div>
+    <div class="modal-actions">
+      <button class="ghost" onclick="closeModal()">বাতিল</button>
+      <button onclick="submitAdjust()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let token = localStorage.getItem('seam_admin_token') || '';
+let users = [];
+let adjustUserId = null;
+
+function headers(){
+  return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+}
+
+async function login(){
+  const password = document.getElementById('passwordInput').value;
+  document.getElementById('loginErr').textContent = '\u00A0';
+  try{
+    const res = await fetch('/api/admin-login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'ব্যর্থ');
+    token = data.token;
+    localStorage.setItem('seam_admin_token', token);
+    enterApp();
+  } catch(err){
+    document.getElementById('loginErr').textContent = err.message;
+  }
+}
+
+function logout(){
+  localStorage.removeItem('seam_admin_token');
+  token = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+async function enterApp(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  await loadSettings();
+  await loadUsers();
+}
+
+async function loadSettings(){
+  const res = await fetch('/api/admin-settings', { headers: headers() });
+  if (res.status === 401) return logout();
+  const data = await res.json();
+  document.getElementById('mineAmount').value = data.mineAmount;
+  document.getElementById('cooldownSeconds').value = data.cooldownSeconds;
+}
+
+async function saveSettings(){
+  const mineAmount = parseFloat(document.getElementById('mineAmount').value);
+  const cooldownSeconds = parseInt(document.getElementById('cooldownSeconds').value, 10);
+  const status = document.getElementById('settingsStatus');
+  status.textContent = 'সেভ হচ্ছে…';
+  const res = await fetch('/api/admin-settings', {
+    method:'POST', headers: headers(),
+    body: JSON.stringify({ mineAmount, cooldownSeconds })
+  });
+  status.textContent = res.ok ? 'সেভ হয়েছে ✓' : 'ব্যর্থ হয়েছে';
+  setTimeout(()=> status.textContent = '\u00A0', 2000);
+}
+
+async function loadUsers(){
+  const res = await fetch('/api/admin-users?limit=200', { headers: headers() });
+  if (res.status === 401) return logout();
+  const data = await res.json();
+  users = data.users || [];
+  renderUsers();
+}
+
+function renderUsers(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const body = document.getElementById('usersBody');
+  const filtered = users.filter(u =>
+    !q || u.id.includes(q) || (u.username||'').toLowerCase().includes(q) || (u.firstName||'').toLowerCase().includes(q)
+  );
+  body.innerHTML = filtered.map(u => `
+    <tr>
+      <td class="name">${u.firstName || ''} ${u.username ? '@'+u.username : ''}</td>
+      <td>${u.id}</td>
+      <td>${Number(u.balance||0).toLocaleString()}</td>
+      <td>${Number(u.totalMined||0).toLocaleString()}</td>
+      <td><button class="adjust-btn" onclick="openModal('${u.id}')">Adjust</button></td>
+    </tr>
+  `).join('');
+}
+
+function openModal(userId){
+  adjustUserId = userId;
+  document.getElementById('adjustAmount').value = '';
+  document.getElementById('adjustReason').value = '';
+  document.getElementById('modalBg').style.display = 'flex';
+}
+function closeModal(){
+  document.getElementById('modalBg').style.display = 'none';
+}
+
+async function submitAdjust(){
+  const amount = parseFloat(document.getElementById('adjustAmount').value);
+  const reason = document.getElementById('adjustReason').value;
+  if (isNaN(amount)) return;
+  const res = await fetch('/api/admin-adjust', {
+    method:'POST', headers: headers(),
+    body: JSON.stringify({ userId: adjustUserId, amount, reason })
+  });
+  if (res.ok){
+    closeModal();
+    loadUsers();
+  }
+}
+
+if (token) enterApp();
+</script>
+</body>
+</html>
